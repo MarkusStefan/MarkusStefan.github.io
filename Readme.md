@@ -1,5 +1,9 @@
 # My personal website
-### To push updates from the local machine to the remote repository, consider following steps
+### To push updates from the local machine to the remote repository, consider following steps:
+- navigate to the root directory
+```
+$ cd ~
+```
 - create a directory (even if parent does not exist)
 ```
 $ mkdir -p ~/my_project
@@ -29,9 +33,19 @@ $ git commit -m "Initial commit"
 ```
 $ git remote add NAME_OF_REMOTE_CONNECTION https://github.com/MarkusStefan/NAME_OF_REPOSITORY.git
 ```
+- check remote pointer (calling verbose)
+```
+$ git remote -v
+```
 ... at this stage, authentication is required ...
 - push the changes to the remote repository
 ```
 $ git push NAME_OF_REMOTE_CONNECTION main
 $ git push NAME_OF_REMOTE_CONNECTION master
 ```
+
+### When deleting or modifying files in the repository online on **GitHub**, then do
+```
+$ git pull
+```
+... to update the state of the local files to be on par with the state in the remote location.
