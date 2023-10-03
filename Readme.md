@@ -38,6 +38,10 @@ $ git remote add NAME_OF_REMOTE_CONNECTION https://github.com/MarkusStefan/NAME_
 $ git remote -v
 ```
 ... at this stage, authentication is required ...
+- delete a connection
+```
+$ git remote rm NAME_OF_REMOTE_CONNECTION
+```
 - push the changes to the remote repository
 ```
 $ git push NAME_OF_REMOTE_CONNECTION main
