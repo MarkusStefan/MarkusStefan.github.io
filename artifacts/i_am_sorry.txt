@@ -1,4 +1,5 @@
-The repository will remain private until completion of project 
-due to possible leakage of sensitive patient information and
-the risk of publication by other research teams that work on
-similar topics.
+The accompanying repository will remain private until completion of project due to:
+    •   the possibility of accidental leakage of sensitive patient information
+    •   the risk of publication by other research teams that work on similar topics
+
+I am sorry!
