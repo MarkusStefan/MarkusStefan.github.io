@@ -1,0 +1,1 @@
+{ "title": "Fast CLI Tool", "thumbnail": "/images/proj-cli.svg", "description": "Zero-dep CLI to batch-rename and move files.", "github": "https://github.com/your-handle/fast-cli", "stack": "Node, Shell" }

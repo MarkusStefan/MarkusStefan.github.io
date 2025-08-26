@@ -1,0 +1,7 @@
+{
+  "title": "Minimal Blog Engine",
+  "thumbnail": "/images/placeholder.png",
+  "description": "Tiny Node-based markdown to HTML pipeline.",
+  "github": "https://github.com/your-handle/minimal-blog",
+  "stack": "Node, Vanilla JS"
+}

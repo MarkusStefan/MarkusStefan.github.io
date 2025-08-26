@@ -1,0 +1,59 @@
+[
+  {
+    "title": "API Starter",
+    "thumbnail": "/images/proj-api.svg",
+    "description": "FastAPI boilerplate with typed models and tests.",
+    "github": "https://github.com/your-handle/api-starter",
+    "stack": "Python, FastAPI"
+  },
+  {
+    "title": "Fast CLI Tool",
+    "thumbnail": "/images/proj-cli.svg",
+    "description": "Zero-dep CLI to batch-rename and move files.",
+    "github": "https://github.com/your-handle/fast-cli",
+    "stack": "Node, Shell"
+  },
+  {
+    "title": "Data Viz Kit",
+    "thumbnail": "/images/proj-viz.svg",
+    "description": "Lightweight charts and utilities.",
+    "github": "https://github.com/your-handle/data-viz-kit",
+    "stack": "TS, Canvas"
+  },
+  {
+    "title": "Minimal Blog Engine",
+    "thumbnail": "/images/placeholder.png",
+    "description": "Tiny Node-based markdown to HTML pipeline.",
+    "github": "https://github.com/your-handle/minimal-blog",
+    "stack": "Node, Vanilla JS"
+  },
+  {
+    "title": "ML Notebooks",
+    "thumbnail": "/images/proj-ml.svg",
+    "description": "Curated ML experiments with clean visualizations.",
+    "github": "https://github.com/your-handle/ml-notebooks",
+    "stack": "Python, Jupyter"
+  },
+  {
+    "title": "example modular project",
+    "thumbnail": "/images/Flow-Chart1.PNG",
+    "description": "Example project entry migrated from the old site.",
+    "github": "https://github.com/MarkusStefan/DeepCNN_SoftAttention",
+    "stack": "Python, Deep Learning",
+    "date": "2024-08-01"
+  },
+  {
+    "title": "Tiny Search Engine",
+    "thumbnail": "/images/proj-search.svg",
+    "description": "Client-side full-text search with stemming.",
+    "github": "https://github.com/your-handle/tiny-search",
+    "stack": "JS"
+  },
+  {
+    "title": "Minimal Web Starter",
+    "thumbnail": "/images/proj-web.svg",
+    "description": "Ultra-light starter with vanilla JS and beautiful defaults.",
+    "github": "https://github.com/your-handle/minimal-web-starter",
+    "stack": "HTML, CSS, JS"
+  }
+]
