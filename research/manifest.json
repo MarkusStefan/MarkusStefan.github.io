@@ -1,0 +1,16 @@
+[
+  {
+    "title": "example research note",
+    "date": "2024-08-01",
+    "thumbnail": "/images/2D-CT-SPECT.png",
+    "description": "Brief description of a research project from the previous site.",
+    "link": "/research/example-research.html"
+  },
+  {
+    "title": "Paper Notes: Minimal Systems",
+    "date": "2025-08-20",
+    "thumbnail": "/images/placeholder.png",
+    "description": "Highlights and commentary on elegant system design.",
+    "link": "#"
+  }
+]

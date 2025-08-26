@@ -1,55 +1,48 @@
-# My personal website
-### To push updates from the local machine to the remote repository, consider following steps:
-- navigate to the root directory
+# Minimal Black-and-White Personal Site
+
+- Static HTML + vanilla CSS/JS
+- Auto-generates blog pages from local markdown in `blog/posts/`
+- Research/Projects read from simple JSON manifests
+
+## Develop
+
+- Add markdown files to `blog/posts/` with simple front matter:
+
 ```
-$ cd ~
-```
-- create a directory (even if parent does not exist)
-```
-$ mkdir -p ~/my_project
-```
-- navigate to the target directory
-```
-$ cd my_project
-```
-- create a gitignore file
-```
-$ touch .gitignore
-```
-- initialization stuff for repo
-```
-$ git init
-```
-- add any changes of all files in the repository
-```
-$ git add .
-$ git add <filename.xyz>
-```
-- commit the changes and include a message
-```
-$ git commit -m "Initial commit"
-```
-- connect to a newly created repository on **GitHub**
-```
-$ git remote add NAME_OF_REMOTE_CONNECTION https://github.com/MarkusStefan/NAME_OF_REPOSITORY.git
-```
-- check remote pointer (calling verbose)
-```
-$ git remote -v
-```
-... at this stage, authentication is required ...
-- delete a connection
-```
-$ git remote rm NAME_OF_REMOTE_CONNECTION
-```
-- push the changes to the remote repository
-```
-$ git push NAME_OF_REMOTE_CONNECTION main
-$ git push NAME_OF_REMOTE_CONNECTION master
+---
+slug: my-post
+title: My Post
+date: 2025-08-25
+thumbnail: /images/placeholder.svg
+description: One line.
+---
+
+# Heading
+Paragraph text.
 ```
 
-### When deleting or modifying files in the repository online on **GitHub**, then do
+- Build blog HTML and manifests:
+
 ```
-$ git pull
+npm run build
 ```
-... to update the state of the local files to be on par with the state in the remote location.
+
+- Serve locally (optional):
+
+```
+npm run serve
+```
+
+Open http://localhost:5173
+
+## Structure
+- `/` About
+- `/blog/` Grid of posts from `blog/manifest.json` (generated). Clicking opens `blog/<slug>.html`.
+- `/research/` Grid from `research/manifest.json`
+- `/projects/` Grid from `projects/manifest.json`
+- `/cv/` Inline CV with Download button for `cv/CV.pdf`
+
+## Customize
+- Update social links in headers
+- Replace `images/placeholder.svg`
+- Add `cv/CV.pdf`
