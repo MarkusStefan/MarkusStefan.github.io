@@ -1,0 +1,7 @@
+{
+  "title": "Exercises: Data Analytics",
+  "thumbnail": "/images/Clustering.PNG",
+  "description": "Solutions in R and Python: outliers, association rules, clustering, regression, heuristics, neural nets.",
+  "github": "https://github.com/MarkusStefan/Data_Analytics",
+  "stack": "R, Python, ML"
+}

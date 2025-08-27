@@ -1,0 +1,7 @@
+{
+  "title": "Bitcoin Price Scraper & Live Chart",
+  "thumbnail": "/images/live-chart.PNG",
+  "description": "Webscraping via XPath/HTML and API key; live visualizer built in Jupyter.",
+  "github": "https://github.com/MarkusStefan/BitcoinPriceScrapers",
+  "stack": "Python, Web Scraping, Jupyter"
+}

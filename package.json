@@ -3,9 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node js/build.js",
+    "build": "node scripts/build-content.js",
+    "watch": "node scripts/build-content.js --watch",
     "serve": "npx http-server -p 5173 -c-1 ."
   },
-  "devDependencies": {
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "gray-matter": "^4.0.3",
+    "marked": "^5.1.1"
   }
 }

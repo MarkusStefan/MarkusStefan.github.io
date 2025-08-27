@@ -1,0 +1,7 @@
+{
+  "title": "Exercises: International Macroeconomics",
+  "thumbnail": "/images/Correlation-econ.PNG",
+  "description": "Solutions in R and Python for macro data: exchange rate regimes, growth, regression, correlations.",
+  "github": "https://github.com/MarkusStefan/Economics",
+  "stack": "R, Python, Economics"
+}

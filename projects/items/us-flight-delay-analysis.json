@@ -1,0 +1,7 @@
+{
+  "title": "US Flight Delay Analysis",
+  "thumbnail": "/images/avg_flight_delay.png",
+  "description": "Analysis in R and SQL with US DOT datasets; part of Google Data Analytics coursework.",
+  "github": "https://github.com/MarkusStefan/FlightDelayAnalysis",
+  "stack": "R, SQL, Analysis"
+}

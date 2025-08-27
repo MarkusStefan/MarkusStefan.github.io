@@ -1,26 +1,5 @@
 [
   {
-    "slug": "hello-world",
-    "title": "Hello, Minimal World",
-    "date": "2025-08-25",
-    "thumbnail": "/images/placeholder.svg",
-    "description": "A brief intro to this minimal black-and-white site."
-  },
-  {
-    "slug": "notes-on-typography",
-    "title": "Notes on Typography",
-    "date": "2025-08-22",
-    "thumbnail": "/images/placeholder.svg",
-    "description": "Small decisions that make text feel effortless to read."
-  },
-  {
-    "slug": "quiet-animations",
-    "title": "Quiet Animations",
-    "date": "2025-08-18",
-    "thumbnail": "/images/placeholder.svg",
-    "description": "Using motion as a soft cue, not a spectacle."
-  },
-  {
     "slug": "08-01-welcome",
     "title": "welcome - first blog post",
     "date": "2024-08-01",
