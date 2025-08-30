@@ -18,14 +18,17 @@
     try {
       const res = await fetch('/blog/manifest.json');
       const items = await res.json();
-      grid.innerHTML = items.map(item => `
-        <a class="card reveal" href="/blog/${encodeURIComponent(item.slug)}.html" aria-label="Open ${item.title}">
+      grid.innerHTML = items.map(item => {
+        const href = item.link ? item.link : `/blog/${encodeURIComponent(item.slug)}.html`;
+        const external = item.link ? ' target="_blank" rel="noopener"' : '';
+        return `
+        <a class="card reveal" href="${href}" aria-label="Open ${item.title}"${external}>
           <img src="${item.thumbnail || '/images/placeholder.svg'}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='/images/placeholder.svg'" />
           <h3>${item.title}</h3>
           <p>${item.description || ''}</p>
           <div class="meta">${item.date || ''}</div>
-        </a>
-      `).join('');
+        </a>`;
+      }).join('');
   } catch (e) {
     grid.innerHTML = '<p class="lede">No posts yet. Add markdown files under /blog/posts</p>';
   }

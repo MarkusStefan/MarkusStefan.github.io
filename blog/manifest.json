@@ -1,5 +1,21 @@
 [
   {
+    "title": "Some Appreciation for Convolution Operation in Computer Vision",
+    "link": "https://medium.com/@markus.koefler11/some-appreciation-for-convolution-operation-in-computer-vision-fec50d6d6fb3?source=rss-9327d9f6d7f------2",
+    "date": "2024-07-28",
+    "description": "Some nice application of convolution operations in computer vision outside of convolutional neural network.",
+    "thumbnail": "/images/convolution.gif",
+    "slug": "some-appreciation-for-convolution-operation-in-computer-vision"
+  },
+  {
+    "title": "Linear Regression — Montecarlo Simulation with R",
+    "link": "https://medium.com/@markus.koefler11/linear-regression-montecarlo-simulation-with-r-8faeee44087f?source=rss-9327d9f6d7f------2",
+    "date": "2023-09-26",
+    "description": "Demonstrating the concept of Monte Carlo simulation on the example of linear regression with R code junks.",
+    "thumbnail": "/images/mc-simulation-linreg.jpg",
+    "slug": "linear-regression-montecarlo-simulation-with-r"
+  },
+  {
     "slug": "08-01-welcome",
     "title": "welcome - first blog post",
     "date": "2024-08-01",

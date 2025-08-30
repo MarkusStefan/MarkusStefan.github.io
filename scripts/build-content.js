@@ -150,6 +150,34 @@ function generateSite() {
 	generatePagesFromDir(BLOGS_MD, BLOGS_MD, '/blogs', 'post_template.html');
 	if (!fs.existsSync(RESEARCH_MD)) fs.mkdirSync(RESEARCH_MD, { recursive: true });
 	generatePagesFromDir(RESEARCH_MD, RESEARCH_MD, '/research', 'post_template.html');
+
+	// build research manifest from items/*.json if present
+	try {
+		const itemsDir = path.join(RESEARCH_MD, 'items');
+		if (fs.existsSync(itemsDir)) {
+			const files = fs.readdirSync(itemsDir).filter(f => f.endsWith('.json'));
+			const items = [];
+			for (const f of files) {
+				try {
+					const raw = fs.readFileSync(path.join(itemsDir, f), 'utf8');
+					const data = JSON.parse(raw);
+					// minimal schema: title required; keep only known keys to avoid bloat
+					if (data && data.title) {
+						const { title, date, thumbnail, description, link } = data;
+						items.push({ title, date, thumbnail, description, link });
+					}
+				} catch { /* skip bad item */ }
+			}
+			// sort by date desc if available
+			items.sort((a,b)=>{
+				const da = Date.parse(a?.date||'')||0; const db = Date.parse(b?.date||'')||0; return db - da;
+			});
+			fs.writeFileSync(path.join(RESEARCH_MD, 'manifest.json'), JSON.stringify(items, null, 2), 'utf8');
+			console.log('wrote research/manifest.json with', items.length, 'items');
+		}
+	} catch (err) {
+		console.warn('could not build research manifest:', err.message);
+	}
 	console.log('site generation complete');
 }
 
