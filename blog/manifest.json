@@ -1,19 +1,11 @@
 [
   {
-    "title": "Some Appreciation for Convolution Operation in Computer Vision",
-    "link": "https://medium.com/@markus.koefler11/some-appreciation-for-convolution-operation-in-computer-vision-fec50d6d6fb3?source=rss-9327d9f6d7f------2",
-    "date": "2024-07-28",
-    "description": "Some nice application of convolution operations in computer vision outside of convolutional neural network.",
-    "thumbnail": "/images/convolution.gif",
-    "slug": "some-appreciation-for-convolution-operation-in-computer-vision"
-  },
-  {
-    "title": "Linear Regression — Montecarlo Simulation with R",
-    "link": "https://medium.com/@markus.koefler11/linear-regression-montecarlo-simulation-with-r-8faeee44087f?source=rss-9327d9f6d7f------2",
-    "date": "2023-09-26",
-    "description": "Demonstrating the concept of Monte Carlo simulation on the example of linear regression with R code junks.",
-    "thumbnail": "/images/mc-simulation-linreg.jpg",
-    "slug": "linear-regression-montecarlo-simulation-with-r"
+    "title": "Causality is the new AI paradigm",
+    "link": "https://medium.com/@markus.koefler11/causality-is-the-new-ai-paradigm-a4c4531d4cdb?source=rss-9327d9f6d7f------2",
+    "date": "2025-08-27",
+    "description": "The objective is not to squeeze every single drop out of a dataset, but rather to get closer to truth. For decades, AI has been dominated by association : finding patterns in data and predicting what comes next. This has",
+    "thumbnail": "/images/blog/causality-is-the-new-ai-paradigm.png",
+    "slug": "causality-is-the-new-ai-paradigm"
   },
   {
     "slug": "08-01-welcome",
@@ -21,5 +13,21 @@
     "date": "2024-08-01",
     "thumbnail": "/images/MK1.png",
     "description": "Hello world post from the previous site."
+  },
+  {
+    "title": "Some Appreciation for Convolution Operation in Computer Vision",
+    "link": "https://medium.com/@markus.koefler11/some-appreciation-for-convolution-operation-in-computer-vision-fec50d6d6fb3?source=rss-9327d9f6d7f------2",
+    "date": "2024-07-28",
+    "description": "I first ever stumbled across the term convolution in a Deep Learning course when we covered Convolutional Neural Nets (CNNs). Though, I found convolutions to be a handy tool for various applications that require fast arr",
+    "thumbnail": "/images/blog/some-appreciation-for-convolution-operation-in-computer-vision.png",
+    "slug": "some-appreciation-for-convolution-operation-in-computer-vision"
+  },
+  {
+    "title": "Linear Regression — Montecarlo Simulation with R",
+    "link": "https://medium.com/@markus.koefler11/linear-regression-montecarlo-simulation-with-r-8faeee44087f?source=rss-9327d9f6d7f------2",
+    "date": "2023-09-26",
+    "description": "Linear Regression — Montecarlo Simulation with R In this story I want to demonstrate a Montecarlo simulation on the example of a simple Linear Regression. In the classical derivation of the OLS estimator, the following m",
+    "thumbnail": "/images/blog/linear-regression-montecarlo-simulation-with-r.png",
+    "slug": "linear-regression-montecarlo-simulation-with-r"
   }
 ]
