@@ -1,0 +1,61 @@
+name: Update Medium Posts
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    # Allow manual triggering
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'assets/scripts/fetch-medium.js'
+      - 'blog/manifest.json'
+
+jobs:
+  update-medium-posts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Create blog images directory
+        run: mkdir -p assets/images/blog
+        
+      - name: Fetch Medium posts and update manifest
+        run: node assets/scripts/fetch-medium.js
+        env:
+          MEDIUM_RSS_URL: ${{ secrets.MEDIUM_RSS_URL || 'https://medium.com/feed/@markus.koefler11' }}
+          
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Commit and push changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add blog/manifest.json
+          git add assets/images/blog/
+          git commit -m "Auto-update Medium posts and sync blog images"
+          git push

@@ -8,7 +8,7 @@ const MEDIUM_USERNAME = 'markus.koefler11';
 const RSS_URL = `https://medium.com/feed/@${MEDIUM_USERNAME}`;
 const BLOG_DIR = path.join(process.cwd(), 'blog');
 const MANIFEST = path.join(BLOG_DIR, 'manifest.json');
-const IMG_DIR = path.join(process.cwd(), 'images', 'blog');
+const IMG_DIR = path.join(process.cwd(), 'assets', 'images', 'blog');
 
 async function fetchRss(url) {
   const res = await fetch(url, {
