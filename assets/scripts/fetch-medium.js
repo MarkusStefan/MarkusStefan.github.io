@@ -1,5 +1,10 @@
 // fetch recent Medium posts and merge into blog/manifest.json
 // run in CI on a schedule; no secrets needed for public RSS
+// 
+// MANUAL OVERRIDE SUPPORT:
+// - If you manually set a custom thumbnail (not from medium.com), it will be preserved
+// - If you manually edit titles or descriptions, they will be kept
+// - Medium images are used temporarily until you set custom ones
 
 import fs from 'fs';
 import path from 'path';
@@ -92,13 +97,33 @@ async function main() {
       try { local = JSON.parse(fs.readFileSync(MANIFEST, 'utf8')); } catch {}
     }
     // merge: prefer local entries when slugs collide; keep external posts by link
+    // preserve manually set thumbnails even for Medium posts
     const byKey = new Map();
     for (const item of local) {
       const key = item.link || `/blog/${item.slug}.html`;
       byKey.set(key, item);
     }
     for (const m of itemsToUse) {
-      byKey.set(m.link, { ...m });
+      const existingItem = byKey.get(m.link);
+      if (existingItem) {
+        // Preserve manually set thumbnails and other local customizations
+        const hasCustomThumbnail = existingItem.thumbnail && 
+          !existingItem.thumbnail.includes('medium.com') && 
+          !existingItem.thumbnail.includes('miro.medium.com') &&
+          existingItem.thumbnail !== '/assets/images/placeholder.svg';
+        
+        byKey.set(m.link, { 
+          ...m, 
+          // Keep custom thumbnail if manually set, otherwise use Medium's
+          thumbnail: hasCustomThumbnail ? existingItem.thumbnail : m.thumbnail,
+          // Preserve any other manual customizations
+          description: existingItem.description || m.description,
+          // Keep custom title if it was manually edited
+          title: existingItem.title !== m.title && existingItem.title ? existingItem.title : m.title
+        });
+      } else {
+        byKey.set(m.link, { ...m });
+      }
     }
     let merged = Array.from(byKey.values()).sort((a,b)=>{
       const da = Date.parse(a?.date||'')||0; const db = Date.parse(b?.date||'')||0; return db-da;

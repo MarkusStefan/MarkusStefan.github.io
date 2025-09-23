@@ -12,7 +12,7 @@
     "link": "https://medium.com/@markus.koefler11/some-appreciation-for-convolution-operation-in-computer-vision-fec50d6d6fb3?source=rss-9327d9f6d7f------2",
     "date": "2024-07-28",
     "description": "I first ever stumbled across the term convolution in a Deep Learning course when we covered Convolutional Neural Nets (CNNs). Though, I found convolutions to be a handy tool for various applications that require fast arr",
-    "thumbnail": "/assets/images/blog/some-appreciation-for-convolution-operation-in-computer-vision.png",
+    "thumbnail": "/assets/images/blog/convolution.gif",
     "slug": "some-appreciation-for-convolution-operation-in-computer-vision"
   },
   {
@@ -20,7 +20,7 @@
     "link": "https://medium.com/@markus.koefler11/linear-regression-montecarlo-simulation-with-r-8faeee44087f?source=rss-9327d9f6d7f------2",
     "date": "2023-09-26",
     "description": "Linear Regression — Montecarlo Simulation with R In this story I want to demonstrate a Montecarlo simulation on the example of a simple Linear Regression. In the classical derivation of the OLS estimator, the following m",
-    "thumbnail": "/assets/images/blog/linear-regression-montecarlo-simulation-with-r.png",
+    "thumbnail": "/assets/images/blog/monte-carlo-sim.png",
     "slug": "linear-regression-montecarlo-simulation-with-r"
   }
 ]
