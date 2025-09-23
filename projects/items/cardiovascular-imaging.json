@@ -1,7 +1,0 @@
-{
-  "title": "Cardiovascular Imaging",
-  "thumbnail": "/images/2D-CT-SPECT-seg-planar.png",
-  "description": "Computer vision + ML to assess treatment response for a rare cardiac disease; automated pipelines, statistical mining, and mortality risk prediction.",
-  "github": "https://github.com/MarkusStefan/",
-  "stack": "Python, CV, ML"
-}

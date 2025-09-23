@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" width="800" height="480">
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="#fafafa"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  
+  <!-- Construction icon -->
+  <rect x="180" y="70" width="40" height="25" fill="none" stroke="#ccc" stroke-width="2" rx="3"/>
+  <path d="M 185 80 L 190 75 L 195 80 L 200 75 L 205 80 L 210 75 L 215 80" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Main text -->
+  <text x="200" y="120" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14" fill="#888" font-weight="600">
+    🚧 UNDER CONSTRUCTION
+  </text>
+  <text x="200" y="140" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12" fill="#aaa">
+    Coming Soon
+  </text>
+  
+  <!-- Interactive button area -->
+  <rect x="160" y="165" width="80" height="25" fill="#f0f0f0" stroke="#ddd" stroke-width="1" rx="4" class="danger-button"/>
+  <text x="200" y="180" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#999" class="button-text">
+    READ
+  </text>
+  
+  <!-- Warning line -->
+  <rect x="50" y="210" width="300" height="1" fill="#eee"/>
+  <text x="200" y="230" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#bbb">
+    [ Interactive placeholder - hover at your own risk ]
+  </text>
+</svg>

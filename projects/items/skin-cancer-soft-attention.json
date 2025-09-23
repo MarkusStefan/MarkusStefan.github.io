@@ -1,7 +1,0 @@
-{
-  "title": "Skin Cancer Classification with Soft-Attention",
-  "thumbnail": "/images/Flow-Chart1.PNG",
-  "description": "VGG16-inspired CNNs with and without soft-attention on 10GB of dermatoscopic images; EDA, data engineering, model building, tuning, training, and evaluation.",
-  "github": "https://github.com/MarkusStefan/DeepCNN_SoftAttention",
-  "stack": "Python, TensorFlow, CNN"
-}

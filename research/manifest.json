@@ -9,14 +9,14 @@
   {
     "title": "Automatic Marker Extraction for Amyloidosis Quantification",
     "date": "2025-01-01",
-    "thumbnail": "/images/amylo-detect.jpg",
+    "thumbnail": "/assets/images/amylo-detect.jpg",
     "description": "Designed & implemented automated pipelines for feature extraction from 3D SPECT scans with the help of deep learning models.",
     "link": "https://jnm.snmjournals.org/content/66/supplement_1/251274"
   },
   {
     "title": "Automatic Marker Extraction for Amyloidosis Quantification",
     "date": "2024-08-01",
-    "thumbnail": "/images/2D-CT-SPECT.png",
+    "thumbnail": "/assets/images/2D-CT-SPECT.png",
     "description": "Designed & implemented automated pipelines for feature extraction from 3D SPECT scans with the help of deep learning models.",
     "link": "https://jnm.snmjournals.org/content/66/supplement_1/251305"
   }

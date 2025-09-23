@@ -3,12 +3,9 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Research — Minimal BW</title>
-		<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-		<link rel="alternate icon" href="/favicon.ico">
+		<title>%title% — Minimal BW</title>
 		<link rel="stylesheet" href="/assets/css/styles.css" />
 		<script defer src="/assets/js/main.js"></script>
-		<script defer src="/assets/js/research.js"></script>
 	</head>
 	<body id="top">
 		<header class="site-header reveal">
@@ -16,7 +13,7 @@
 			<nav class="site-nav">
 				<a href="/">About</a>
 				<a href="/blog/">Blog</a>
-				<a href="/research/" class="active">Research</a>
+				<a href="/research/">Research</a>
 				<a href="/projects/">Projects</a>
 				<a href="/cv/">CV</a>
 			</nav>
@@ -27,22 +24,21 @@
 				<a href="https://github.com/MarkusStefan" aria-label="GitHub" target="_blank" rel="noopener" title="GitHub">
 					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.12 7.62 10.6.56.1.77-.24.77-.54v-2c-3.1.68-3.76-1.33-3.76-1.33-.5-1.26-1.2-1.6-1.2-1.6-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.65 2.5 1.18 3.11.9.1-.7.37-1.18.68-1.45-2.48-.28-5.1-1.24-5.1-5.52 0-1.22.43-2.2 1.12-2.98-.11-.28-.49-1.4.1-2.92 0 0 .93-.3 3.05 1.14.88-.25 1.83-.37 2.77-.37.94 0 1.89.12 2.77.37 2.12-1.44 3.05-1.14 3.05-1.14.59 1.52.21 2.64.1 2.92.69.78 1.12 1.76 1.12 2.98 0 4.3-2.62 5.23-5.12 5.5.38.33.72.98.72 1.98v2.94c0 .3.21.65.77.54 4.43-1.48 7.62-5.67 7.62-10.6C23.23 5.46 18.27.5 12 .5z"/></svg>
 				</a>
-				<a href="https://medium.com/@markus.koefler11" aria-label="Medium" target="_blank" rel="noopener" title="Medium">
-					<svg viewBox="0 0 1043.63 592.71" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M588.67 296.5c0 163.75-131.6 296.5-294.33 296.5S0 460.25 0 296.5 131.6 0 294.34 0s294.33 132.75 294.33 296.5zM761.2 296.5c0 152.63-65.8 276.4-146.96 276.4-81.16 0-146.97-123.77-146.97-276.4S533.08 20.1 614.24 20.1c81.15 0 146.96 123.77 146.96 276.4zM1043.63 296.5c0 135.22-29.3 244.76-65.45 244.76-36.16 0-65.46-109.54-65.46-244.76S942.02 51.74 978.18 51.74c36.15 0 65.45 109.54 65.45 244.76z"/></svg>
-				</a>
+						<a href="https://medium.com/@markus.koefler11" aria-label="Medium" target="_blank" rel="noopener" title="Medium">
+							<svg viewBox="0 0 1043.63 592.71" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M588.67 296.5c0 163.75-131.6 296.5-294.33 296.5S0 460.25 0 296.5 131.6 0 294.34 0s294.33 132.75 294.33 296.5zM761.2 296.5c0 152.63-65.8 276.4-146.96 276.4-81.16 0-146.97-123.77-146.97-276.4S533.08 20.1 614.24 20.1c81.15 0 146.96 123.77 146.96 276.4zM1043.63 296.5c0 135.22-29.3 244.76-65.45 244.76-36.16 0-65.46-109.54-65.46-244.76S942.02 51.74 978.18 51.74c36.15 0 65.45 109.54 65.45 244.76z"/></svg>
+						</a>
 				<a href="https://www.kaggle.com/markuskfler" aria-label="Kaggle" target="_blank" rel="noopener" title="Kaggle">
 					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 3h4v7.59l6.29-6.3L15 5.7 8.41 12 15 18.3l-1.71 1.41L7 13.41V21H3V3z"/></svg>
 				</a>
 			</div>
 		</header>
 
-		<main class="content wide">
-			<section class="intro reveal">
-				<h1>Research</h1>
-				<p class="lede">Published and unpublished research projects.</p>
-			</section>
-
-			<section class="grid" id="research-grid" aria-live="polite"></section>
+		<main class="content narrow">
+			<article class="reveal">
+				<h1>%title%</h1>
+				<p class="lede">%date%</p>
+				<div class="post-body">%content%</div>
+			</article>
 		</main>
 
 		<footer class="site-footer reveal">
@@ -59,4 +55,4 @@
 			<span class="time" id="clock"></span>
 		</footer>
 	</body>
-</html>
+	</html>

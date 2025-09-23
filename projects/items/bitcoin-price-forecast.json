@@ -1,7 +1,0 @@
-{
-  "title": "Bitcoin Price Forecast",
-  "thumbnail": "/images/R_PRED_WEEK.png",
-  "description": "Compared LSTM vs. regression baseline; recursive training and moving-window predictions.",
-  "github": "https://github.com/MarkusStefan/BitcoinPricePrediction",
-  "stack": "Python, RNN, Time Series"
-}

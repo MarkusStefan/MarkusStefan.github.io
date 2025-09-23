@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>⚠️ DANGER ZONE ⚠️</title>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #ff0000;
+            color: white;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: redPulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes redPulse {
+            0% { background: #ff0000; }
+            100% { background: #cc0000; }
+        }
+        
+        .warning-container {
+            max-width: 600px;
+            padding: 40px;
+            border: 3px solid white;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+            animation: shake 0.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shake {
+            0% { transform: translateX(-2px) rotate(-0.5deg); }
+            100% { transform: translateX(2px) rotate(0.5deg); }
+        }
+        
+        .danger-title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .countdown {
+            font-size: 120px;
+            font-weight: 900;
+            margin: 30px 0;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+            animation: countdownPulse 1s ease-in-out infinite;
+        }
+        
+        @keyframes countdownPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .warning-text {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 20px 0 30px 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        
+        .go-back-btn {
+            background: white;
+            color: #ff0000;
+            border: 3px solid white;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: inherit;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .go-back-btn:hover {
+            background: #ff0000;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        .final-message {
+            display: none;
+            font-size: 20px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-warning {
+            margin-top: 20px;
+            font-size: 16px;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="warning-container">
+        <div id="initialWarning">
+            <div class="danger-title">⚠️ DANGER ZONE ⚠️</div>
+            <div class="countdown" id="countdown">10</div>
+            <div class="warning-text">DANGER ZONE, GO BACK NOW!</div>
+            <button class="go-back-btn" onclick="goBack()">GO BACK</button>
+        </div>
+        
+        <div id="finalMessage" class="final-message">
+            <div class="danger-title">💀 TOO LATE 💀</div>
+            <p>You should not have done this,<br>now Markus is angry and might send out his AIs to come for you</p>
+            <div class="ai-warning">🤖 Don't do this again 🤖</div>
+            <br><br>
+            <button class="go-back-btn" onclick="goBack()">ESCAPE NOW</button>
+        </div>
+    </div>
+
+    <script>
+        let countdown = 10;
+        let countdownInterval;
+        let hasLeft = false;
+        
+        function updateCountdown() {
+            const countdownEl = document.getElementById('countdown');
+            countdownEl.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                showFinalMessage();
+            } else {
+                countdown--;
+            }
+        }
+        
+        function showFinalMessage() {
+            document.getElementById('initialWarning').classList.add('hidden');
+            document.getElementById('finalMessage').style.display = 'block';
+            
+            // Make the background even more dramatic
+            document.body.style.animation = 'redPulse 0.5s ease-in-out infinite alternate';
+        }
+        
+        function goBack() {
+            hasLeft = true;
+            const returnUrl = sessionStorage.getItem('returnUrl') || '/';
+            sessionStorage.removeItem('returnUrl');
+            window.location.href = returnUrl;
+        }
+        
+        // Start countdown immediately
+        countdownInterval = setInterval(updateCountdown, 1000);
+        
+        // Prevent user from easily going back with browser buttons
+        window.addEventListener('beforeunload', function(e) {
+            if (!hasLeft) {
+                e.preventDefault();
+                e.returnValue = 'Are you sure you want to leave the danger zone?';
+            }
+        });
+        
+        // Add some extra drama with random screen shakes
+        setInterval(() => {
+            if (Math.random() < 0.3) {
+                document.body.style.animation = 'shake 0.1s ease-in-out';
+                setTimeout(() => {
+                    document.body.style.animation = 'redPulse 2s ease-in-out infinite alternate';
+                }, 100);
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
