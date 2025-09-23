@@ -126,6 +126,6 @@
     // Store the current page URL for return navigation
     sessionStorage.setItem('returnUrl', window.location.href);
     // Navigate to danger zone
-    window.location.href = '/images/danger-zone.html';
+    window.location.href = '/assets/images/danger-zone.html';
   };
 })();

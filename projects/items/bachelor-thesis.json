@@ -1,7 +1,0 @@
-{
-  "title": "Bachelor Thesis",
-  "thumbnail": "/images/BSC.PNG",
-  "description": "Collected 124 economic time series; aggregation, splicing, and moving-average imputation for missing values.",
-  "github": "https://drive.google.com/file/d/1IxwI9zRFUR-wQ99IfeK7dPWt61NiEByV/view?usp=drive_link",
-  "stack": "Econometrics, Data Engineering"
-}

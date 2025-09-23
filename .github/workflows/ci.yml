@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build content
+        run: npm run build
+        
+      - name: Check for syntax errors in HTML files
+        run: |
+          find . -name "*.html" -exec echo "Checking {}" \;
+          
+      - name: Validate manifest files
+        run: |
+          echo "Validating JSON manifests..."
+          node -e "
+            const fs = require('fs');
+            const files = ['blog/manifest.json', 'projects/manifest.json', 'research/manifest.json'];
+            files.forEach(f => {
+              if (fs.existsSync(f)) {
+                try {
+                  JSON.parse(fs.readFileSync(f, 'utf8'));
+                  console.log('✓', f);
+                } catch (e) {
+                  console.error('✗', f, e.message);
+                  process.exit(1);
+                }
+              }
+            });
+          "

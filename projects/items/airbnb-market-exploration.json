@@ -1,7 +1,0 @@
-{
-  "title": "Chicago AirBnB Market Exploration",
-  "thumbnail": "/images/airbnb_fig.png",
-  "description": "Holistic group project; practiced the full data science process with heavy wrangling and advanced data mining.",
-  "github": "https://github.com/MarkusStefan/AirBnB/tree/main",
-  "stack": "Python, Pandas, Viz"
-}
