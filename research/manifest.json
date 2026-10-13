@@ -1,5 +1,12 @@
 [
   {
+    "title": "Discovering Globally Aligned Representations through Causal Curiosity-Guided Exploration",
+    "date": "2026-10-13",
+    "thumbnail": "/assets/images/research/causal-representations/overview.svg",
+    "description": "Learning globally consistent factor-sharing maps for compositional generalization. Research report with controlled MuJoCo results; nearing completion for planned top-tier ML submissions in 2027.",
+    "link": "/research/aligned-causal-representations/"
+  },
+  {
     "title": "Multi-Modal Knowledge Graphs for Early Disease Prediction",
     "date": "2025-08-01",
     "thumbnail": "/",

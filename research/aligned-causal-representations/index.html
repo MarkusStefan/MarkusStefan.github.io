@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Discovering Globally Aligned Representations through Causal Curiosity-Guided Exploration | Markus Köfler</title>
+		<meta name="description" content="Discovering globally aligned causal task representations: mathematical setup, diagnostic demonstrations, and controlled MuJoCo evidence for compositional generalization." />
+		<link rel="canonical" href="https://markusstefan.github.io/research/aligned-causal-representations/" />
+		<meta property="og:title" content="Discovering Globally Aligned Representations through Causal Curiosity-Guided Exploration" />
+		<meta property="og:description" content="Global factor alignment and compositional generalization, with a mathematical formulation and controlled MuJoCo results." />
+		<meta property="og:type" content="article" />
+		<meta property="og:url" content="https://markusstefan.github.io/research/aligned-causal-representations/" />
+		<meta property="og:image" content="https://markusstefan.github.io/assets/images/research/causal-representations/rq2-heldout-curves.png" />
+		<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+		<link rel="stylesheet" href="/assets/css/styles.css" />
+		<script defer src="/assets/js/main.js"></script>
+		<link rel="stylesheet" href="/assets/css/research-report.css" />
+		<script defer src="/assets/js/research-report.js"></script>
+	</head>
+	<body id="top" class="report-page">
+		<a class="skip-link" href="#report">Skip to report</a>
+		<header class="site-header reveal">
+			<a class="logo" href="/" aria-label="Home">M</a>
+			<nav class="site-nav">
+				<a href="/">About</a>
+				<a href="/blog/">Blog</a>
+				<a href="/research/" class="active" aria-current="page">Research</a>
+				<a href="/projects/">Projects</a>
+				<a href="/cv/">CV</a>
+			</nav>
+			<div class="socials">
+				<a href="https://www.linkedin.com/in/markus-k%C3%B6fler/" aria-label="LinkedIn" target="_blank" rel="noopener" title="LinkedIn">
+					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V24h-4V8.5zm7.5 0h3.8v2.1h.1c.5-1 1.8-2.1 3.7-2.1 4 0 4.7 2.6 4.7 6V24h-4v-7.3c0-1.8 0-4.2-2.6-4.2-2.6 0-3 2-3 4V24H8V8.5z"/></svg>
+				</a>
+				<a href="https://github.com/MarkusStefan" aria-label="GitHub" target="_blank" rel="noopener" title="GitHub">
+					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.73.5.77 5.46.77 11.73c0 4.93 3.19 9.12 7.62 10.6.56.1.77-.24.77-.54v-2c-3.1.68-3.76-1.33-3.76-1.33-.5-1.26-1.2-1.6-1.2-1.6-.98-.67.07-.66.07-.66 1.08.08 1.65 1.11 1.65 1.11.96 1.65 2.5 1.18 3.11.9.1-.7.37-1.18.68-1.45-2.48-.28-5.1-1.24-5.1-5.52 0-1.22.43-2.2 1.12-2.98-.11-.28-.49-1.4.1-2.92 0 0 .93-.3 3.05 1.14.88-.25 1.83-.37 2.77-.37.94 0 1.89.12 2.77.37 2.12-1.44 3.05-1.14 3.05-1.14.59 1.52.21 2.64.1 2.92.69.78 1.12 1.76 1.12 2.98 0 4.3-2.62 5.23-5.12 5.5.38.33.72.98.72 1.98v2.94c0 .3.21.65.77.54 4.43-1.48 7.62-5.67 7.62-10.6C23.23 5.46 18.27.5 12 .5z"/></svg>
+				</a>
+				<a href="https://medium.com/@markus.koefler11" aria-label="Medium" target="_blank" rel="noopener" title="Medium">
+					<svg viewBox="0 0 1043.63 592.71" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M588.67 296.5c0 163.75-131.6 296.5-294.33 296.5S0 460.25 0 296.5 131.6 0 294.34 0s294.33 132.75 294.33 296.5zM761.2 296.5c0 152.63-65.8 276.4-146.96 276.4-81.16 0-146.97-123.77-146.97-276.4S533.08 20.1 614.24 20.1c81.15 0 146.96 123.77 146.96 276.4zM1043.63 296.5c0 135.22-29.3 244.76-65.45 244.76-36.16 0-65.46-109.54-65.46-244.76S942.02 51.74 978.18 51.74c36.15 0 65.45 109.54 65.45 244.76z"/></svg>
+				</a>
+				<a href="https://www.kaggle.com/markuskfler" aria-label="Kaggle" target="_blank" rel="noopener" title="Kaggle">
+					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M3 3h4v7.59l6.29-6.3L15 5.7 8.41 12 15 18.3l-1.71 1.41L7 13.41V21H3V3z"/></svg>
+				</a>
+			</div>
+		</header>
+
+<main id="report" class="report">
+<!-- RESEARCH_REPORT_START -->
+<p><a class="eyebrow" href="/research/">All research</a></p>
+<p class="eyebrow">Research report · Markus Köfler · October 2026</p>
+
+<h1>Discovering Globally Aligned Representations through Causal Curiosity-Guided Exploration</h1>
+<p class="report-lede">Globally aligned task codes improve transfer to unseen factor combinations in our controlled policy study. We investigate how an agent can discover the sharing relationships those codes express.</p>
+
+<p>Consider a hypothetical robot trained with a light body on slippery and high-friction surfaces. If a heavy body appears only on high-friction terrain, walking with that body on a slippery surface requires combining familiar conditions.</p>
+<div class="opening-media">
+<figure>
+<img src="/assets/images/research/causal-representations/puck-discovery-poster.webp" data-animation="/assets/images/research/causal-representations/puck-discovery.gif" data-poster="/assets/images/research/causal-representations/puck-discovery-poster.webp" width="960" height="453" alt="Puck discovery animation showing diagnostic trajectories in the project's analytical environment.">
+<figcaption>Puck discovery example from the project presentation. Puck uses analytical dynamics.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/research/causal-representations/heavy-ant-poster.webp" data-animation="/assets/images/research/causal-representations/heavy-ant.gif" data-poster="/assets/images/research/causal-representations/heavy-ant-poster.webp" width="500" height="500" alt="Heavy Ant performing a pirouette in the original Causal Curiosity demonstration.">
+<figcaption>Heavy Ant pirouette. Causal Curiosity demonstration.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/research/causal-representations/light-ant-poster.webp" data-animation="/assets/images/research/causal-representations/light-ant.gif" data-poster="/assets/images/research/causal-representations/light-ant-poster.webp" width="500" height="500" alt="Light Ant performing a pirouette in the original Causal Curiosity demonstration.">
+<figcaption>Light Ant pirouette. Causal Curiosity demonstration.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/research/causal-representations/heavy-hopper-poster.webp" data-animation="/assets/images/research/causal-representations/heavy-hopper.gif" data-poster="/assets/images/research/causal-representations/heavy-hopper-poster.webp" width="500" height="500" alt="Heavy Hopper jumping in the original Causal Curiosity demonstration.">
+<figcaption>Heavy Hopper jump. Causal Curiosity demonstration.</figcaption>
+</figure>
+<figure>
+<img src="/assets/images/research/causal-representations/light-hopper-poster.webp" data-animation="/assets/images/research/causal-representations/light-hopper.gif" data-poster="/assets/images/research/causal-representations/light-hopper-poster.webp" width="500" height="500" alt="Light Hopper jumping in the original Causal Curiosity demonstration.">
+<figcaption>Light Hopper jump. Causal Curiosity demonstration.</figcaption>
+</figure>
+</div>
+
+<p><button id="animation-toggle" class="animation-toggle" type="button" aria-pressed="false" hidden>Play demonstrations</button></p>
+<p class="small">Ant and Hopper demonstrations by <a href="https://sites.google.com/usc.edu/causal-curiosity/home">Sontakke et al.</a> [3], also used in the presentation. They illustrate prior work and are separate from our RQ2 policy evaluations.</p>
+
+<nav class="section-nav" aria-label="Report sections">
+<a href="#motivation">Motivation</a><a href="#setup">Problem setup</a><a href="#alignment">Recursive discovery</a><a href="#contribution">Contribution</a><a href="#results">Experiments</a><a href="#limits">Limitations</a>
+</nav>
+
+<section id="motivation">
+
+<h2>Learning what can be shared</h2>
+<p>Compositional generalization means transferring to unseen combinations of familiar factor values. A representation that separates mass from friction could let experience with each property inform a new combination. For that reuse to work, the code for a given property must mean the same thing across environments.</p>
+<figure>
+<img src="/assets/images/research/causal-representations/overview.svg" width="960" height="600" alt="Hypothetical mass and friction grid with heavy mass on low friction held out." loading="lazy">
+<figcaption>The held-out combination contains familiar properties. This two-factor example explains the motivation. RQ2 evaluates three-factor task families.</figcaption>
+</figure>
+
+<p>Causal representation learning seeks variables that explain a system&#39;s responses to interventions [1]. Observational data alone can admit several factor encodings, so identifying a particular factorization requires assumptions or further information [2].</p>
+<p>We use diagnostic actions to compare responses across environments. A movement may expose mass differences while reducing the influence of friction. The agent chooses the movement, while hidden parameters stay fixed during each rollout. The target is to group environments by shared parameter values without observing those values directly.</p>
+</section>
+
+<section id="setup">
+
+<h2>Environments, hidden parameters, and the sharing map</h2>
+<p>Let <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">E</mi><mo>=</mo><mo stretchy="false">{</mo><msup><mi>e</mi><mi>i</mi></msup><msubsup><mo stretchy="false">}</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><msub><mi>N</mi><mi mathvariant="script">E</mi></msub></msubsup></mrow><annotation encoding="application/x-tex">\mathcal E=\{e^i\}_{i=1}^{N_{\mathcal E}}</annotation></semantics></math></span> be the environment family. Environment <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">e^i</annotation></semantics></math></span> has a fixed hidden vector</p>
+<div class="math-display"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi mathvariant="bold-italic">η</mi><mi>i</mi></msup><mo>=</mo><mo stretchy="false">(</mo><msubsup><mi>η</mi><mn>1</mn><mi>i</mi></msubsup><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msubsup><mi>η</mi><mi>K</mi><mi>i</mi></msubsup><mo stretchy="false">)</mo><mo>∈</mo><msub><mi mathvariant="script">H</mi><mn>1</mn></msub><mo>×</mo><mo>⋯</mo><mo>×</mo><msub><mi mathvariant="script">H</mi><mi>K</mi></msub><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\boldsymbol\eta^i=(\eta_1^i,\ldots,\eta_K^i)
+\in\mathcal H_1\times\cdots\times\mathcal H_K.</annotation></semantics></math></span></div>
+<p>Here, <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span> indexes a physical or reward factor, and <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="script">H</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\mathcal H_k</annotation></semantics></math></span> contains its admissible values. The induced Markov decision process is</p>
+<div class="math-display"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi mathvariant="script">M</mi><mi>i</mi></msup><mo>=</mo><mo stretchy="false">(</mo><mi mathvariant="script">S</mi><mo separator="true">,</mo><mi mathvariant="script">A</mi><mo separator="true">,</mo><msub><mi mathvariant="script">T</mi><msup><mi mathvariant="bold-italic">η</mi><mi>i</mi></msup></msub><mo separator="true">,</mo><msub><mi mathvariant="script">R</mi><msup><mi mathvariant="bold-italic">η</mi><mi>i</mi></msup></msub><mo separator="true">,</mo><msub><mi>ρ</mi><mn>0</mn></msub><mo separator="true">,</mo><mi>γ</mi><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\mathcal M^i=
+(\mathcal S,\mathcal A,
+\mathcal T_{\boldsymbol\eta^i},
+\mathcal R_{\boldsymbol\eta^i},\rho_0,\gamma).</annotation></semantics></math></span></div>
+<p>Tasks share state and action spaces <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">S</mi></mrow><annotation encoding="application/x-tex">\mathcal S</annotation></semantics></math></span> and <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\mathcal A</annotation></semantics></math></span>. The hidden vector conditions the transition kernel <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">T</mi></mrow><annotation encoding="application/x-tex">\mathcal T</annotation></semantics></math></span> and reward law <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">R</mi></mrow><annotation encoding="application/x-tex">\mathcal R</annotation></semantics></math></span>. The initial-state distribution is <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ρ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\rho_0</annotation></semantics></math></span>, and <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span> is the discount factor. During discovery, the agent observes rollout responses but receives neither <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="bold-italic">η</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">\boldsymbol\eta^i</annotation></semantics></math></span> nor the sharing relationships.</p>
+<p>For each factor, the desired sharing map is the equivalence relation</p>
+<div class="math-display"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>e</mi><mi>i</mi></msup><msub><mo>∼</mo><mi>k</mi></msub><msup><mi>e</mi><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msup><mspace width="1em"/><mo>⟺</mo><mspace width="1em"/><msubsup><mi>η</mi><mi>k</mi><mi>i</mi></msubsup><mo>=</mo><msubsup><mi>η</mi><mi>k</mi><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">e^i\sim_k e^{i&#x27;}
+\quad\Longleftrightarrow\quad
+\eta_k^i=\eta_k^{i&#x27;}.</annotation></semantics></math></span></div>
+<p>A discovered categorical code should recover it through</p>
+<div class="math-display"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mi>c</mi><mi>k</mi><mi>i</mi></msubsup><mo>=</mo><msubsup><mi>c</mi><mi>k</mi><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msubsup><mspace width="1em"/><mo>⟺</mo><mspace width="1em"/><msup><mi>e</mi><mi>i</mi></msup><msub><mo>∼</mo><mi>k</mi></msub><msup><mi>e</mi><msup><mi>i</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msup><mo separator="true">,</mo><mspace width="2em"/><msubsup><mi>c</mi><mi>k</mi><mi>i</mi></msubsup><mo>∈</mo><mo stretchy="false">{</mo><mn>1</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>L</mi><mi>k</mi></msub><mo stretchy="false">}</mo><mo separator="true">,</mo></mrow><annotation encoding="application/x-tex">c_k^i=c_k^{i&#x27;}
+\quad\Longleftrightarrow\quad
+e^i\sim_k e^{i&#x27;},
+\qquad c_k^i\in\{1,\ldots,L_k\},</annotation></semantics></math></span></div>
+<p>where <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>k</mi></msub><mo>=</mo><mi mathvariant="normal">∣</mi><msub><mi mathvariant="script">H</mi><mi>k</mi></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">L_k=|\mathcal H_k|</annotation></semantics></math></span> for the discrete factor levels studied here. A structured learner can then share a component between environments with equal labels, even when their other properties differ. The discovery setting supplies <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span> and the cardinalities <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">L_k</annotation></semantics></math></span>.</p>
+<p>One global renaming of labels preserves the relation. A global reordering of coordinates also preserves it after matching coordinates to factors.</p>
+</section>
+
+<section id="alignment">
+
+<h2>Why recursive discovery can lose global consistency</h2>
+<p>Causal Curiosity (CC) finds action sequences that separate environments by their responses [3]. It continues the search independently within each resulting branch. Those searches can assign different meanings to labels and code positions.</p>
+<h3>Label permutation</h3>
+<p>Suppose both body-mass branches discover friction. Label 1 can mean low friction in the light-body branch and high friction in the heavy-body branch. Matching labels would then pool environments with different friction values.</p>
+<h3>Dimension permutation</h3>
+<p>With three or more factors, branches can discover the remaining factors in different orders. The second coordinate might encode friction in one branch and motor gain in another.</p>
+<p>At discovery stage <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span>, write the branch-local code as</p>
+<div class="math-display"><span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msubsup><mover accent="true"><mi>c</mi><mo>~</mo></mover><mi>j</mi><mi>i</mi></msubsup><mo>=</mo><msub><mi>σ</mi><mi>b</mi></msub><mtext> ⁣</mtext><mrow><mo fence="true">(</mo><msubsup><mi>c</mi><mrow><msub><mi>κ</mi><mi>b</mi></msub><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><mi>i</mi></msubsup><mo fence="true">)</mo></mrow><mo separator="true">,</mo><mspace width="2em"/><mi>b</mi><mo>=</mo><msubsup><mover accent="true"><mi>c</mi><mo>~</mo></mover><mrow><mo>&lt;</mo><mi>j</mi></mrow><mi>i</mi></msubsup><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">\tilde c_j^i
+=\sigma_b\!\left(c_{\kappa_b(j)}^i\right),
+\qquad b=\tilde c_{&lt;j}^i.</annotation></semantics></math></span></div>
+<p>The prefix <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover accent="true"><mi>c</mi><mo>~</mo></mover><mrow><mo>&lt;</mo><mi>j</mi></mrow><mi>i</mi></msubsup></mrow><annotation encoding="application/x-tex">\tilde c_{&lt;j}^i</annotation></semantics></math></span> identifies the branch. Locally, <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mi>b</mi></msub><mo stretchy="false">(</mo><mi>j</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\kappa_b(j)</annotation></semantics></math></span> denotes the factor discovered at stage <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span>, and <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">\sigma_b</annotation></semantics></math></span> is that branch&#39;s label bijection. Branch-dependent <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">\sigma_b</annotation></semantics></math></span> causes label permutations. Branch-dependent <span class="katex"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>κ</mi><mi>b</mi></msub></mrow><annotation encoding="application/x-tex">\kappa_b</annotation></semantics></math></span> causes dimension permutations.</p>
+<p>The full path can still identify each environment. An individual coordinate, however, no longer determines which environments share one factor value. Recovering the task identity is therefore insufficient to recover the sharing map.</p>
+<figure>
+<img src="/assets/images/research/causal-representations/alignment-demo-poster.webp" data-animation="/assets/images/research/causal-representations/alignment-demo.gif" data-poster="/assets/images/research/causal-representations/alignment-demo-poster.webp" width="1100" height="418" alt="Conceptual animation comparing globally consistent friction labels with branch-dependent label reversals." loading="lazy">
+<figcaption>In this hypothetical example, friction labels reverse between branches on the right. The animation uses zero-based labels for display. The equations use the thesis's one-based convention.</figcaption>
+</figure>
+
+<figure>
+<img src="/assets/images/research/causal-representations/causal-curiosity.webp" width="1760" height="1092" alt="Causal Curiosity illustration of recursive experiments that distinguish shape, mass, and size." loading="lazy">
+<figcaption>Recursive diagnostic experiments from the original Causal Curiosity project [3], used in the presentation.</figcaption>
+</figure>
+
+</section>
+
+<section id="contribution">
+
+<h2>Discovering globally aligned factor codes</h2>
+<p>We formulate the discovery target as a set of factor-wise sharing relations. Each recovered coordinate must group the same parameter values across the environment family.</p>
+<p>Our proposed method, Saturated Sequential Residualization (SSR), evaluates diagnostic experiments across the family and gives each new coordinate a common assignment. It removes response variation explained by earlier discoveries before searching for another factor.</p>
+<p>The common assignment still needs informative experiments and enough coverage of factor combinations. Interactions between factors or missing combinations can prevent a coordinate from recovering the intended physical relation.</p>
+<p>The evaluation separates discovery accuracy from the usefulness of the resulting structure. RQ2 addresses the latter by supplying ideal codes and changing their organization, so discovery errors cannot explain the comparison.</p>
+</section>
+
+<section id="results">
+
+<h2>RQ2: control on unseen combinations</h2>
+<p>We compare aligned codes with mild, intermediate, and severe hierarchical label permutations. All four codes preserve complete task information. A fifth condition, the Generalist, receives zero context in the same input dimensions.</p>
+<p>CPU Soft Actor-Critic (SAC), implemented in Stable-Baselines3, trains on half of each task grid. Every physical factor value appears during training. The other half contains unseen combinations and contributes no policy updates or test-time adaptation. Learner settings and interaction budgets match within each family.</p>
+<p>The study covers Hopper, Ant, Walker2d, and HalfCheetah with ten policy seeds per condition. It fixes factor dimensions and varies labels, so it tests the label-permutation failure mode. The supplied codes are controlled representations, separate from those produced by running CC or SSR.</p>
+<figure>
+<img src="/assets/images/research/causal-representations/rq2-heldout-curves.png" width="2160" height="1440" alt="Held-out learning curves for four MuJoCo task families, comparing aligned codes, three permutation conditions, and no context." loading="lazy">
+<figcaption>Held-out returns across training. Lines average ten policy seeds. Shading shows pointwise 95% Student-t confidence intervals. The four families use different task rewards and axis scales. <a href="/assets/images/research/causal-representations/rq2-heldout-curves.pdf">PDF</a></figcaption>
+</figure>
+
+<p>Aligned codes have the highest mean held-out return and area under the learning curve (AUC) in every family. Their paired AUC advantage over the Generalist is positive in all four families after correction for multiple comparisons.</p>
+<p>Severe permutations fall below the Generalist on held-out AUC in every family. Intermediate permutations also fall below it in Hopper and HalfCheetah. The intermediate-code comparisons in Ant and Walker2d remain uncertain.</p>
+<figure>
+<img src="/assets/images/research/causal-representations/rq2-auc-summary.png" width="2160" height="1260" alt="Held-out AUC for the five representation conditions in each environment family." loading="lazy">
+<figcaption>AUC integrates held-out return over training and divides by the interaction budget. Higher is better. Error bars show uncorrected 95% Student-t intervals. The paired comparisons in the text use Bonferroni correction for 28 AUC contrasts. <a href="/assets/images/research/causal-representations/rq2-auc-summary.pdf">PDF</a></figcaption>
+</figure>
+
+<h3>When context hurts transfer</h3>
+<p>HalfCheetah&#39;s intermediate and severe conditions reach high training returns while their held-out returns become negative. The final held-out means are 5,209.9 for aligned codes, −2,972.6 for intermediate permutations, −4,708.4 for severe permutations, and 972.5 without context.</p>
+<figure>
+<img src="/assets/images/research/causal-representations/rq2-transfer-gap.png" width="2160" height="810" alt="HalfCheetah training and held-out returns, showing high training performance alongside negative transfer returns under stronger permutations." loading="lazy">
+<figcaption>HalfCheetah training and held-out performance under the same six-million-interaction budget. Shading shows pointwise 95% Student-t intervals across ten policy seeds. <a href="/assets/images/research/causal-representations/rq2-transfer-gap.pdf">PDF</a></figcaption>
+</figure>
+
+<p>A globally consistent category can carry evidence about one factor value across tasks. With branch-dependent labels, the policy must learn that category&#39;s meaning jointly with earlier code coordinates. The observed training-to-test gap is consistent with overfitting to the combinations seen during training.</p>
+</section>
+
+<section id="limits">
+
+<h2>Limits of the comparison</h2>
+<p>The ten policy seeds use one fixed representation map and a parity split. The intervals describe learner variability conditional on those choices. Mean AUC decreases with permutation severity in all families, but corrected adjacent comparisons do not resolve every step of that ordering in Hopper.</p>
+<p>Changing code assignments can also change their distributions and associations between training and testing. In HalfCheetah, a cue predicts reward direction on training tasks and reverses on held-out tasks. It offers a possible explanation for the negative returns, although the policy&#39;s reliance on that cue has not been measured.</p>
+<p>These experiments establish a benefit for supplied aligned codes under the tested conditions. End-to-end control with autonomously discovered maps and isolated dimension-permutation effects remain open questions. The task families are constructed simulator studies, so the results do not establish transfer to arbitrary robots or new physical factor values.</p>
+</section>
+
+<section id="references" class="references">
+
+<h2>References</h2>
+<ol>
+<li><span id="ref-crl"></span>Schölkopf et al. (2021). <a href="https://doi.org/10.1109/JPROC.2021.3058954">Toward Causal Representation Learning</a>. Proceedings of the IEEE.</li>
+<li><span id="ref-identification"></span>Locatello et al. (2019). <a href="https://proceedings.mlr.press/v97/locatello19a.html">Challenging Common Assumptions in the Unsupervised Learning of Disentangled Representations</a>. ICML.</li>
+<li><span id="ref-cc"></span>Sontakke, Mehrjou, Itti, and Schölkopf (2021). <a href="https://proceedings.mlr.press/v139/sontakke21a.html">Causal Curiosity: RL Agents Discovering Self-supervised Experiments for Causal Representation Learning</a>. ICML.</li>
+</ol>
+</section>
+
+<p class="status report-status">Near completion · Planned submissions to top-tier ML conferences in 2027</p>
+<!-- RESEARCH_REPORT_END -->
+</main>
+
+
+		<footer class="site-footer reveal">
+			<a class="to-top" href="#top" aria-label="Back to top">Top</a>
+			<span class="sep">•</span>
+			<span>© <span id="year"></span></span>
+			<span class="sep">•</span>
+			<span><a href="mailto:markus.koefler11@gmail.com">markus.koefler11@gmail.com</a><button class="copy" data-copy="markus.koefler11@gmail.com" aria-label="Copy email"></button></span>
+			<span class="sep">•</span>
+			<span><a href="tel:+436503834639">+43 650 3834639</a><button class="copy" data-copy="+436503834639" aria-label="Copy phone"></button></span>
+			<span class="sep">•</span>
+			<button class="btn" id="themeToggle" aria-label="Toggle theme">theme</button>
+			<span class="sep">•</span>
+			<span class="time" id="clock"></span>
+		</footer>
+	</body>
+</html>

@@ -7,6 +7,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
 import chokidar from 'chokidar';
+import { buildResearchReport } from './build-research-report.js';
 
 const ROOT = process.cwd();
 const PROJECTS_MD = path.join(ROOT, 'content', 'projects');
@@ -145,6 +146,7 @@ function generatePagesFromDir(dir, outDir, baseUrl, templateName) {
 }
 
 function generateSite() {
+  buildResearchReport();
 	generateProjects();
 	if (!fs.existsSync(BLOGS_MD)) fs.mkdirSync(BLOGS_MD, { recursive: true });
 	generatePagesFromDir(BLOGS_MD, BLOGS_MD, '/blogs', 'post_template.html');
