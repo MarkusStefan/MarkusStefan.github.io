@@ -9,7 +9,7 @@
       const hasValidLink = item.link && item.link !== '#' && item.link.trim() !== '';
       
       return `
-        <a class="card reveal" href="${hasValidLink ? item.link : '#'}" ${hasValidLink ? 'target="_blank" rel="noopener"' : 'onclick="event.preventDefault(); return false;"'}>
+        <a class="card reveal" href="${hasValidLink ? item.link : '#'}" ${hasValidLink ? (item.link.startsWith('/') ? '' : 'target="_blank" rel="noopener"') : 'onclick="event.preventDefault(); return false;"'}>
           <img src="${item.thumbnail || '/assets/images/placeholder.svg'}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='/assets/images/placeholder.svg'" />
           <h3>${item.title}</h3>
           <p>${item.description || ''}</p>
