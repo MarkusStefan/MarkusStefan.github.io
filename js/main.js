@@ -369,7 +369,7 @@
     }
 
     function laneClass(lane) {
-      return ['edu', 'work', 'branch', 'quest'][lane] || 'edu';
+      return ['edu', 'work', 'branch', 'quest', 'quest'][lane] || 'edu';
     }
 
     function setFilter(branchFilter) {
@@ -392,7 +392,7 @@
 
     function renderGraph() {
       const svgRect = svg.getBoundingClientRect();
-      const width = svg.clientWidth || svgRect.width || 150;
+      const width = svg.clientWidth || svgRect.width || 164;
       const height = stage.offsetHeight || svgRect.height || 900;
       if (!width || !height) return;
 
@@ -400,10 +400,11 @@
       svg.innerHTML = '';
 
       const laneX = [
-        width * 0.16,
-        width * 0.39,
-        width * 0.62,
-        width * 0.85
+        width * 0.13,
+        width * 0.31,
+        width * 0.49,
+        width * 0.68,
+        width * 0.86
       ];
 
       const nodes = {};
@@ -423,12 +424,22 @@
       });
 
       const n = nodes;
-      if (!n.n1 || !n.n13) return;
+      if (!n.n1 || !n.n14) return;
 
       const guidesLayer = svgEl('g', { class: 'git-guides-layer' }, svg);
       const connectorsLayer = svgEl('g', { class: 'git-connectors-layer' }, svg);
       const pathsLayer = svgEl('g', { class: 'git-paths-layer' }, svg);
       const dotsLayer = svgEl('g', { class: 'git-dots-layer' }, svg);
+
+      function drawMergeDot(x, y, laneCls, group) {
+        svgEl('circle', {
+          cx: x.toFixed(1),
+          cy: y.toFixed(1),
+          r: 3.5,
+          class: `git-merge-dot git-fill-${laneCls}`,
+          'data-group': group
+        }, dotsLayer);
+      }
 
       // 0. Background vertical dotted rail guides (Gitflow style)
       laneX.forEach((x) => {
@@ -454,10 +465,10 @@
         }, connectorsLayer);
       });
 
-      // 2. Lane 0: education (Green, leftmost) bottom -> top: n13 -> n12 -> n9 -> n7 -> n1
+      // 2. Lane 0: education (Green, leftmost) bottom -> top: n14 -> n13 -> n9 -> n7 -> n1
       const eduTopY = Math.max(16, n.n1.y - 20);
       svgEl('path', {
-        d: `M ${n.n13.x.toFixed(1)} ${n.n13.y.toFixed(1)} L ${n.n1.x.toFixed(1)} ${eduTopY.toFixed(1)}`,
+        d: `M ${n.n14.x.toFixed(1)} ${n.n14.y.toFixed(1)} L ${n.n1.x.toFixed(1)} ${eduTopY.toFixed(1)}`,
         class: 'git-rail git-stroke-edu',
         'data-group': 'education'
       }, pathsLayer);
@@ -467,33 +478,51 @@
         'data-group': 'education'
       }, pathsLayer);
 
-      // 3. service/military (Amber, Lane 2): forks right from n12 -> n11 -> merges left into Lane 0
-      const yMilMerge = n.n11.y - Math.min(28, Math.max(12, (n.n11.y - n.n10.y) * 0.45));
+      // 3. Military Service (Amber, Rail 2): forks right from n13 -> n12 -> merges left into edu above n12
+      const yMilMerge = n.n12.y - Math.min(28, Math.max(14, (n.n12.y - n.n11.y) * 0.48));
       svgEl('path', {
-        d: bezierY(n.n12.x, n.n12.y, n.n11.x, n.n11.y),
+        d: bezierY(n.n13.x, n.n13.y, n.n12.x, n.n12.y),
         class: 'git-rail git-stroke-branch',
         'data-group': 'branch'
       }, pathsLayer);
       svgEl('path', {
-        d: bezierY(n.n11.x, n.n11.y, laneX[0], yMilMerge),
+        d: bezierY(n.n12.x, n.n12.y, laneX[0], yMilMerge),
         class: 'git-rail git-stroke-branch',
         'data-group': 'branch'
       }, pathsLayer);
+      drawMergeDot(laneX[0], yMilMerge, 'branch', 'branch');
 
-      // 4. exchange/uiuc (Amber, Lane 2): forks right from Lane 0 -> n10 -> merges left into n9
-      const yUiucStart = n.n10.y + Math.min(28, Math.max(12, (n.n11.y - n.n10.y) * 0.42));
+      // 4. UIUC Exchange Semester (Amber, Rail 2): forks right from edu -> n11 -> merges left into edu before Tutor & B.Sc.
+      const yUiucStart = n.n11.y + Math.min(26, Math.max(12, (n.n12.y - n.n11.y) * 0.36));
+      const yUiucMerge = n.n11.y - Math.min(26, Math.max(14, (n.n11.y - n.n10.y) * 0.58));
       svgEl('path', {
-        d: bezierY(laneX[0], yUiucStart, n.n10.x, n.n10.y),
+        d: bezierY(laneX[0], yUiucStart, n.n11.x, n.n11.y),
         class: 'git-rail git-stroke-branch',
         'data-group': 'branch'
       }, pathsLayer);
       svgEl('path', {
-        d: bezierY(n.n10.x, n.n10.y, n.n9.x, n.n9.y),
+        d: bezierY(n.n11.x, n.n11.y, laneX[0], yUiucMerge),
         class: 'git-rail git-stroke-branch',
         'data-group': 'branch'
       }, pathsLayer);
+      drawMergeDot(laneX[0], yUiucMerge, 'branch', 'branch');
 
-      // 5. Lane 1: work (Blue, second lane) forks right from n7 -> n6 -> n4 -> n3 -> n2
+      // 5a. AAU Tutor in Econometrics (Blue, Rail 1): forks right from edu -> n10 -> merges left into edu before B.Sc. completion (n9)
+      const yTutorStart = n.n10.y + Math.min(18, Math.max(10, (n.n11.y - n.n10.y) * 0.32));
+      const yTutorMerge = n.n10.y - Math.min(26, Math.max(14, (n.n10.y - n.n9.y) * 0.52));
+      svgEl('path', {
+        d: bezierY(laneX[0], yTutorStart, n.n10.x, n.n10.y),
+        class: 'git-rail git-stroke-work',
+        'data-group': 'work'
+      }, pathsLayer);
+      svgEl('path', {
+        d: bezierY(n.n10.x, n.n10.y, laneX[0], yTutorMerge),
+        class: 'git-rail git-stroke-work',
+        'data-group': 'work'
+      }, pathsLayer);
+      drawMergeDot(laneX[0], yTutorMerge, 'work', 'work');
+
+      // 5b. Continuous BAWAG work trunk (Blue, Rail 1): forks right from edu at n7 -> n6 -> n4 -> n3 -> n2
       const workTopY = Math.max(16, n.n2.y - 20);
       svgEl('path', {
         d: bezierY(n.n7.x, n.n7.y, n.n6.x, n.n6.y),
@@ -511,34 +540,36 @@
         'data-group': 'work'
       }, pathsLayer);
 
-      // 6. Uniforce Consulting (Amber, Lane 2): forks right from n9 -> n8 -> up Lane 2 -> merges left into Lane 1 above n4
-      const yUniMerge = n.n4.y - Math.min(24, Math.max(12, (n.n4.y - n.n5.y) * 0.48));
-      const yUniCurveStart = n.n4.y;
+      // 6. Uniforce Consulting (Purple quest, Rail 3): forks right from edu at Aug 2023 (above n9) -> n8 -> straight up Rail 3 -> merges left into edu above n4 (Nov 2024)
+      const yUniStart = n.n8.y + Math.min(24, Math.max(12, (n.n9.y - n.n8.y) * 0.42));
+      const yUniMerge = n.n4.y - Math.min(24, Math.max(12, (n.n4.y - n.n5.y) * 0.46));
       svgEl('path', {
-        d: bezierY(n.n9.x, n.n9.y, n.n8.x, n.n8.y),
-        class: 'git-rail git-stroke-branch',
-        'data-group': 'branch'
+        d: bezierY(laneX[0], yUniStart, n.n8.x, n.n8.y),
+        class: 'git-rail git-stroke-quest',
+        'data-group': 'quest'
       }, pathsLayer);
       svgEl('path', {
-        d: `M ${n.n8.x.toFixed(1)} ${n.n8.y.toFixed(1)} L ${laneX[2].toFixed(1)} ${yUniCurveStart.toFixed(1)} ${bezierY(laneX[2], yUniCurveStart, laneX[1], yUniMerge).replace(/^M [^ ]+ [^ ]+ /, '')}`,
-        class: 'git-rail git-stroke-branch',
-        'data-group': 'branch'
+        d: `M ${n.n8.x.toFixed(1)} ${n.n8.y.toFixed(1)} L ${laneX[3].toFixed(1)} ${n.n4.y.toFixed(1)} ${bezierY(laneX[3], n.n4.y, laneX[0], yUniMerge).replace(/^M [^ ]+ [^ ]+ /, '')}`,
+        class: 'git-rail git-stroke-quest',
+        'data-group': 'quest'
       }, pathsLayer);
+      drawMergeDot(laneX[0], yUniMerge, 'quest', 'quest');
 
-      // 7. MedUni Vienna Research Internship (Purple, Lane 3): forks right above n6 -> straight up Lane 3 to n5 -> merges left into Lane 1 above n3
-      const yMedStart = n.n6.y - Math.min(20, Math.max(10, (n.n6.y - n.n4.y) * 0.35));
-      const yMedLand = n.n4.y + Math.min(18, Math.max(8, (n.n6.y - n.n4.y) * 0.28));
-      const yMedMerge = n.n3.y - Math.min(24, Math.max(12, (n.n3.y - n.n2.y) * 0.48));
+      // 7. MedUni Vienna Research Internship (Purple quest, Rail 4): forks right from edu in Feb 2024 -> up Rail 4 through n5 -> merges left into edu above n3 (Dec 2025)
+      const yMedStart = n.n6.y - Math.min(20, Math.max(10, (n.n6.y - n.n4.y) * 0.25));
+      const yMedLand = n.n4.y + Math.min(18, Math.max(10, (n.n6.y - n.n4.y) * 0.22));
+      const yMedMerge = n.n3.y - Math.min(24, Math.max(12, (n.n3.y - n.n2.y) * 0.46));
       svgEl('path', {
-        d: `${bezierY(laneX[1], yMedStart, laneX[3], yMedLand)} L ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)}`,
+        d: `${bezierY(laneX[0], yMedStart, laneX[4], yMedLand)} L ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)}`,
         class: 'git-rail git-stroke-quest',
         'data-group': 'quest'
       }, pathsLayer);
       svgEl('path', {
-        d: bezierY(n.n5.x, n.n5.y, laneX[1], yMedMerge),
+        d: `M ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)} L ${laneX[4].toFixed(1)} ${n.n3.y.toFixed(1)} ${bezierY(laneX[4], n.n3.y, laneX[0], yMedMerge).replace(/^M [^ ]+ [^ ]+ /, '')}`,
         class: 'git-rail git-stroke-quest',
         'data-group': 'quest'
       }, pathsLayer);
+      drawMergeDot(laneX[0], yMedMerge, 'quest', 'quest');
 
       // 8. Bold dark-outlined commit circles (Gitflow style)
       Object.values(n).forEach(node => {
