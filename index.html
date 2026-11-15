@@ -7,8 +7,8 @@
 		<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 		<link rel="alternate icon" href="/favicon.ico">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link rel="stylesheet" href="/assets/css/styles.css" />
-		<script defer src="/assets/js/main.js"></script>
+		<link rel="stylesheet" href="/assets/css/styles.css?v=20261115c" />
+		<script defer src="/assets/js/main.js?v=20261115c"></script>
 	</head>
 		<body id="top">
 			<header class="site-header reveal">
@@ -21,6 +21,7 @@
 				<a href="/cv/">CV</a>
 			</nav>
 			<div class="socials">
+				<button class="style-toggle" id="styleToggle" type="button" aria-pressed="false" title="Switch to nostalgic old-school HTML style">retro</button>
 				<a href="https://www.linkedin.com/in/markus-k%C3%B6fler/" aria-label="LinkedIn" target="_blank" rel="noopener" title="LinkedIn">
 					<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5V16.4c0-1.8-.03-4.1-2.5-4.1-2.5 0-2.88 1.95-2.88 3.97V24h-5V8z"/></svg>
 				</a>
@@ -36,31 +37,149 @@
 			</div>
 		</header>
 
-		<main class="content narrow">
+		<main class="content medium">
 			<section class="intro reveal">
 				<h1>About Me</h1>
-				<p class="lede">AI & Causality fanatic. Pursuing a MSc in Data Science. I enjoy ML research oriented towards
-					making truly intelligent learning algorithms to match human-level performance in various tasks.</p>
+				<p class="lede">AI &amp; Causality fanatic. Diplom-Ingenieur (M.Sc.) in Data Science &amp; Marketing Data Scientist. I enjoy ML research oriented towards making truly intelligent learning algorithms to match human-level performance in various tasks.</p>
 			</section>
 
-			<section class="timeline reveal" id="about-timeline">
-				<article>
-					<h3>2023 — Present</h3>
-					<p>M.Sc. in Data Science (Vienna University of Technology) • Research collaboration with Medical University of Vienna.</p>
-					<p>Data Scientist at BAWAG Group • Data Analysis & Visualization, Causal Inference in Marketing, Automation.</p>
-				</article>
-				<article>
-					<h3>2020 - 2023</h3>
-					<p>B.Sc. International Business & Economics (AAU Klagenfurt) • Major in quantitative economics, Minor in computer science & machine learning.</p>
-				</article>
-				<article>
-					<h3>2022</h3>
-					<p>Exchange Student (University of Illinois at Urbana Champaign) • Computer Science.</p>
-				</article>
-				<article>
-					<h3>2012 - 2020</h3>
-					<p>Matura AHS (Spittal an der Drau) • Focus on Natural Science.</p>
-				</article>
+			<section class="git-trajectory reveal" id="about-timeline" aria-label="Education and work trajectory">
+				<div class="git-toolbar">
+					<div class="git-filters" role="group" aria-label="Filter trajectory branches">
+						<button type="button" class="git-filter-btn is-active" data-branch-filter="all" aria-pressed="true">all</button>
+						<button type="button" class="git-filter-btn" data-branch-filter="education" aria-pressed="false"><span class="git-dot dot-edu" aria-hidden="true"></span>education</button>
+						<button type="button" class="git-filter-btn" data-branch-filter="work" aria-pressed="false"><span class="git-dot dot-work" aria-hidden="true"></span>work</button>
+						<button type="button" class="git-filter-btn" data-branch-filter="branch" aria-pressed="false"><span class="git-dot dot-branch" aria-hidden="true"></span>checkouts</button>
+						<button type="button" class="git-filter-btn" data-branch-filter="quest" aria-pressed="false"><span class="git-dot dot-quest" aria-hidden="true"></span>side-quest</button>
+					</div>
+					<div class="git-direction">&#8593; newest at top</div>
+				</div>
+
+				<div class="git-lane-bar" aria-hidden="true">
+					<div class="git-lane-names">
+						<span>edu</span>
+						<span>work</span>
+						<span>sub</span>
+						<span>quest</span>
+					</div>
+					<div class="git-lane-title">Trajectory</div>
+				</div>
+
+				<div class="git-graph-stage" id="gitGraphStage">
+					<svg class="git-graph-svg" id="gitGraphSvg" aria-hidden="true"></svg>
+
+					<article class="git-commit" style="--row: 1" data-node-id="n1" data-lane="0" data-group="education">
+						<div class="git-commit-head">
+							<h3>TU Wien &mdash; Dipl.-Ing. / M.Sc. Data Science</h3>
+							<span class="git-date">Oct 2023 &ndash; Dec 2026</span>
+						</div>
+						<p>Graduated with a focus on machine learning, medical AI, and causal representation learning.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 2" data-node-id="n2" data-lane="1" data-group="work">
+						<div class="git-commit-head">
+							<h3>BAWAG Group &mdash; Marketing Data Scientist (Full-Time)</h3>
+							<span class="git-date">Nov 2026 &ndash; Present</span>
+						</div>
+						<p>Causal inference, Bayesian Marketing Mix Modeling, marketing measurement, web-tracking, and workflow automation.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 3" data-node-id="n3" data-lane="1" data-group="work">
+						<div class="git-commit-head">
+							<h3>BAWAG Group &mdash; Marketing Data Scientist (Part-Time)</h3>
+							<span class="git-date">Oct 2025 &ndash; Oct 2026</span>
+						</div>
+						<p>Specialized (because of re-org) in marketing analytics, involving causal inference, Marketing Mix Modeling, web-tracking and automation.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 4" data-node-id="n5" data-lane="4" data-group="quest">
+						<div class="git-commit-head">
+							<h3>Medical University of Vienna &mdash; Research Internship</h3>
+							<span class="git-date">Feb 2024 &ndash; Dec 2025</span>
+						</div>
+						<p>Medical imaging, ML-based feature extraction and disease prediction.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 5" data-node-id="n4" data-lane="1" data-group="work">
+						<div class="git-commit-head">
+							<h3>BAWAG Group &mdash; Data Analytics &amp; Automation (Part-Time)</h3>
+							<span class="git-date">Sep 2024 &ndash; Sep 2025</span>
+						</div>
+						<p>Built automated reporting pipelines in Airflow, ETL workflows, and internal tooling.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 6" data-node-id="n6" data-lane="1" data-group="work">
+						<div class="git-commit-head">
+							<h3>BAWAG Group &mdash; Intern</h3>
+							<span class="git-date">Nov 2023 &ndash; Aug 2024</span>
+						</div>
+						<p>Supported banking analytics, reporting pipelines, and process automation.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 7" data-node-id="n7" data-lane="0" data-group="education">
+						<div class="git-commit-head">
+							<h3>TU Wien &mdash; Enrolled in M.Sc. Data Science</h3>
+							<span class="git-date">Oct 2023 &ndash; Dec 2026</span>
+						</div>
+						<p>Moved to Vienna to begin graduate studies after graduating in Klagenfurt.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 8" data-node-id="n8" data-lane="3" data-group="quest">
+						<div class="git-commit-head">
+							<h3>Uniforce Consulting &mdash; Student Organization</h3>
+							<span class="git-date">Aug 2023 &ndash; Nov 2024</span>
+						</div>
+						<p>Member at student consulting club, leading recruiting phases and internal automation projects.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 9" data-node-id="n9" data-lane="0" data-group="education">
+						<div class="git-commit-head">
+							<h3>AAU Klagenfurt &mdash; B.Sc. International Business &amp; Economics</h3>
+							<span class="git-date">Oct 2020 &ndash; Jul 2023</span>
+						</div>
+						<p>Graduated with distinction; specialized in quantitative methods with a minor in computer science and machine learning.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 10" data-node-id="n10" data-lane="1" data-group="work">
+						<div class="git-commit-head">
+							<h3>AAU Klagenfurt &mdash; Tutor in Econometrics</h3>
+							<span class="git-date">Oct 2022 &ndash; Feb 2023</span>
+						</div>
+						<p>Taught R and regression analysis in tutorials.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 11" data-node-id="n11" data-lane="2" data-group="branch">
+						<div class="git-commit-head">
+							<h3>UIUC (Illinois) &mdash; Exchange Semester</h3>
+							<span class="git-date">Aug 2022 &ndash; Dec 2022</span>
+						</div>
+						<p>Undergraduate coursework in computer science and data structures at Urbana-Champaign.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 12" data-node-id="n12" data-lane="2" data-group="branch">
+						<div class="git-commit-head">
+							<h3>Mandatory Military Service</h3>
+							<span class="git-date">Oct 2020 &ndash; Apr 2021</span>
+						</div>
+						<p>Served in the military parallel to studies. Watched lectures instead of YouTube videos during lockdown.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 13" data-node-id="n13" data-lane="0" data-group="education">
+						<div class="git-commit-head">
+							<h3>AAU Klagenfurt &mdash; Enrolled</h3>
+							<span class="git-date">Oct 2020</span>
+						</div>
+						<p>Started B.Sc. in International Business &amp; Economics.</p>
+					</article>
+
+					<article class="git-commit" style="--row: 14" data-node-id="n14" data-lane="0" data-group="education">
+						<div class="git-commit-head">
+							<h3>BRG Spittal an der Drau &mdash; High-School Student</h3>
+							<span class="git-date">2012 &ndash; Jun 2020</span>
+						</div>
+						<p>Matura with a focus on Natural Sciences.</p>
+					</article>
+				</div>
 			</section>
 		</main>
 
