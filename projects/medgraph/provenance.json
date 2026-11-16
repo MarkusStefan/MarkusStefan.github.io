@@ -1,0 +1,31 @@
+{
+  "purpose": "Editorial provenance for the MedGraph project page; no new experiments were run.",
+  "sources": [
+    {
+      "source": "KG.zip/main.tex",
+      "archive_sha256": "1333421e8f90c857bf5d1a958051cfbb64480979ca2efaacfa7afbb73f7c7eed",
+      "sections": [
+        "Knowledge Graph Modeling & Construction",
+        "Knowledge Graph Embeddings",
+        "Dimensionality Reduction",
+        "Early Disease Prediction",
+        "Follow-up Tasks"
+      ]
+    },
+    {
+      "source": "medgraph/README.md",
+      "sha256": "865bdcff42eb57f3f7808dd269abafac8dcb2eea46b64e51efc9287aa2e6d331",
+      "supports": "Binning, marker selection, missingness, domain consultation, and intended screening task."
+    },
+    {
+      "source": "medgraph/nb/graph_data.ipynb",
+      "supports": "Referral-clue removal, masking post-scan CMR, marker categories, missingness filtering."
+    }
+  ],
+  "visuals": {
+    "graph-construction.svg": "New explanatory schema, explicitly illustrative; no patient records.",
+    "transe-projections.png": "Unmodified images/transe.png from KG.zip; no new embedding or projection run."
+  },
+  "limits": "Report claims were used for methodology. Performance numbers and superiority claims are omitted. Future disease prediction, clinical validity, and leakage-free embedding-to-GNN evaluation are not established.",
+  "repository_link": "The report cites MarkusStefan/medgraph, but the GitHub API returned 404 on 2026-11-16. No broken source link is displayed."
+}

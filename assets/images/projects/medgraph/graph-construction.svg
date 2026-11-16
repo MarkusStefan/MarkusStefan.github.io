@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 420" role="img" aria-labelledby="title desc">
+<title id="title">From clinical records to shared graph structure</title>
+<desc id="desc">Illustrative schema: two patients share the age 60 to 70 value node. It connects to the Age marker, which belongs to Demographics. Missing observations add no edge.</desc>
+<rect width="840" height="420" fill="#f7f8fa"/>
+<g font-family="system-ui,sans-serif" fill="#17212e">
+<text x="40" y="48" font-size="15" letter-spacing="2">MEDGRAPH / GRAPH CONSTRUCTION</text>
+<g fill="none" stroke="#768493" stroke-width="3"><path d="M192 142L320 210M192 278L320 210M470 210H540M650 210H692"/></g>
+<g stroke-width="2"><rect x="40" y="110" width="152" height="64" rx="12" fill="#e7eef9" stroke="#3563a0"/><rect x="40" y="246" width="152" height="64" rx="12" fill="#e7eef9" stroke="#3563a0"/>
+<rect x="320" y="176" width="150" height="68" rx="12" fill="#e1f0e9" stroke="#287357"/>
+<rect x="540" y="176" width="110" height="68" rx="12" fill="#fff" stroke="#768493"/>
+<rect x="692" y="176" width="124" height="68" rx="12" fill="#fff" stroke="#768493"/></g>
+<g font-size="20" text-anchor="middle"><text x="116" y="149">Patient A</text><text x="116" y="285">Patient B</text><text x="395" y="217">age_60_70</text><text x="595" y="217">Age</text><text x="754" y="216" font-size="16">Demographics</text></g>
+<g font-size="14" fill="#526170"><text x="222" y="139">has_age</text><text x="222" y="295">has_age</text><text x="334" y="270">encoded value</text><text x="563" y="270">marker</text><text x="721" y="270">category</text></g>
+<text x="40" y="367" font-size="17">Shared observations connect patients through clinical concepts.</text>
+<text x="40" y="395" font-size="14" fill="#526170">Illustrative schema · no patient records shown</text>
+</g></svg>

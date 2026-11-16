@@ -7,11 +7,10 @@
     "link": "/research/aligned-causal-representations/"
   },
   {
-    "title": "Multi-Modal Knowledge Graphs for Early Disease Prediction",
-    "date": "2025-08-01",
-    "thumbnail": "/",
-    "description": "Leveraging KG & neural graph embedding models for data mining and disease prediction.",
-    "link": "#"
+    "title": "Cardiovascular Imaging",
+    "thumbnail": "/assets/images/2D-CT-SPECT-seg-planar.png",
+    "description": "Deep learning pipelines for SPECT/CT marker extraction and treatment-response analysis in cardiac amyloidosis. Explore the SpectQuant package.",
+    "link": "https://github.com/MarkusStefan/spectquant"
   },
   {
     "title": "Automatic Marker Extraction for Amyloidosis Quantification",

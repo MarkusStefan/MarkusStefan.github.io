@@ -22,11 +22,7 @@
     vitae: '/cv/',
     resume: '/cv/',
     docs: '/docs/',
-    documentation: '/docs/',
-    drafts: '/drafts/',
-    draft: '/drafts/',
-    'drafts/research': '/drafts/research/',
-    'draft research': '/drafts/research/'
+    documentation: '/docs/'
   };
 
   if (localStorage.getItem(STYLE_KEY) === 'retro') {
@@ -94,8 +90,6 @@
             <option value="/projects/">Projects</option>
             <option value="/cv/">CV</option>
             <option value="/docs/">Docs</option>
-            <option value="/drafts/">Drafts</option>
-            <option value="/drafts/research/">Drafts Research</option>
           </datalist>
           <button type="submit" class="retro-nav-btn retro-go-btn">Go</button>
         </form>
