@@ -7,12 +7,6 @@
     "link": "/research/aligned-causal-representations/"
   },
   {
-    "title": "Cardiovascular Imaging",
-    "thumbnail": "/assets/images/2D-CT-SPECT-seg-planar.png",
-    "description": "Deep learning pipelines for SPECT/CT marker extraction and treatment-response analysis in cardiac amyloidosis. Explore the SpectQuant package.",
-    "link": "https://github.com/MarkusStefan/spectquant"
-  },
-  {
     "title": "Automatic Marker Extraction for Amyloidosis Quantification",
     "date": "2025-01-01",
     "thumbnail": "/assets/images/amylo-detect.jpg",

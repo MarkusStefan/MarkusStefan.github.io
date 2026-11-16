@@ -3,18 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MedGraph: Clinical records as a graph | Markus Köfler</title>
+<title>MedGraph: Learning patient representations | Markus Köfler</title>
 <meta name="description" content="Domain-informed clinical graph construction, knowledge graph embeddings, and GNNs for an exploratory cardiac amyloidosis screening project.">
 <link rel="canonical" href="https://markusstefan.github.io/projects/medgraph/">
-<meta property="og:title" content="MedGraph: Clinical records as a graph">
+<meta property="og:title" content="MedGraph: Learning patient representations">
 <meta property="og:description" content="From sparse clinical records to graph representations and an exploratory screening model.">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://markusstefan.github.io/assets/images/projects/medgraph/graph-construction.svg">
+<meta property="og:image" content="https://markusstefan.github.io/assets/images/projects/medgraph/distmult.png">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/css/styles.css">
 <link rel="stylesheet" href="/assets/css/research-report.css">
 <link rel="stylesheet" href="/projects/medgraph/report.css">
 <script defer src="/assets/js/main.js"></script>
+<script defer src="/projects/medgraph/embeddings.js"></script>
 </head>
 <body id="top" class="report-page medgraph-page">
 <a class="skip-link" href="#report">Skip to report</a>
@@ -47,39 +48,50 @@
 <main id="report" class="report">
 <a class="eyebrow" href="/projects/">All projects</a>
 <p class="eyebrow">MedGraph · Team project · 2025 · Unpublished</p>
-<h1>Clinical records as a graph</h1>
-<p class="report-lede">Can shared clinical patterns help flag cardiac amyloidosis when patient records are incomplete?</p>
-<p>We brought demographics, blood tests, medical history, and cardiac measurements into one graph, then learned patient representations for a screening task.</p>
+<h1>Learning patient representations from clinical graphs</h1>
+<p class="report-lede">Turn incomplete clinical records into relationships, learn their structure, and use it to assess cardiac amyloidosis.</p>
+<figure class="lead-figure embedding-explorer" data-view="both">
+<div class="embedding-heading"><div><span class="eyebrow">DistMult / Patient embeddings</span><h2>Patterns in representation space</h2></div><a class="figure-source" href="/assets/images/projects/medgraph/distmult.png">Open full figure ↗</a></div>
+<div class="embedding-controls" role="group" aria-label="Choose embedding projection" hidden>
+<button type="button" data-projection="pca" aria-pressed="false" aria-controls="embedding-frame">PCA</button>
+<button type="button" data-projection="umap" aria-pressed="false" aria-controls="embedding-frame">UMAP</button>
+<button type="button" data-projection="both" aria-pressed="true" aria-controls="embedding-frame">Side by side</button>
+</div>
+<div id="embedding-frame" class="embedding-frame"><img src="/assets/images/projects/medgraph/distmult.png" width="1589" height="790" alt="Original report figure: PCA and UMAP projections of DistMult patient embeddings, colored by Perugini grade. Distinct clusters contain mixed grades."></div>
+<p class="embedding-view-label" aria-live="polite">PCA and UMAP · original report figure</p>
+<figcaption>The report notes clearer clusters than with TransE, but the grades remain mixed: visual separation is not evidence of better disease prediction. The controls change the view of the original image; no points or axes have been altered.</figcaption>
+</figure>
 <p class="small">Ante Milicevic · Nemanja Saveski · Markus Köfler<br>Knowledge Graphs course project, with clinical input from Medical University of Vienna.</p>
 
 <section aria-labelledby="construction">
-<p class="eyebrow">01 / Build the structure</p>
-<h2 id="construction">Make each observation count</h2>
-<p>A measurement becomes a relationship: patient → encoded value → marker → clinical category. Patients with a shared observation meet at the same value node.</p>
-<figure><img src="/assets/images/projects/medgraph/graph-construction.svg" width="840" height="420" alt="Illustrative graph: Patient A and Patient B share age_60_70, linked to Age and then Demographics."><figcaption>Schema illustration. Missing measurements create no observation edge; an unknown value is not treated as a negative finding.</figcaption></figure>
+<p class="eyebrow">01 / Records → relations</p>
+<h2 id="construction">Give clinical observations a shared vocabulary</h2>
+<p>Demographics, blood tests, medical history, and cardiac measurements arrive as a sparse table. We translated observed values into triples: <strong>patient → relation → encoded marker value</strong>. For example, age 64 becomes <code>patient → has_age → age_60_70</code>.</p>
 <div class="construction-notes">
-<div><h3>Choose meaningful values</h3><p>Encode continuous features as categories informed by domain knowledge. Keep useful disease indicators, and group markers into clinical categories.</p></div>
-<div><h3>Respect what was known</h3><p>Preprocessing removes referral clues that reveal the target and masks MRI measurements recorded after scintigraphy. Missingness filters control which markers enter the graph.</p></div>
+<div><h3>Encode clinical meaning</h3><p>Domain-informed bins turn continuous measurements into categories. Marker values link to their marker and clinical category, so individual observations sit within a common schema.</p></div>
+<div><h3>Keep useful observations</h3><p>We filtered sparse or unsuitable variables, removed referral clues that reveal the target, and masked MRI measurements taken after scintigraphy. An unrecorded marker creates no observation edge.</p></div>
 </div>
+<figure><a href="/assets/images/projects/medgraph/bipartite.png"><img src="/assets/images/projects/medgraph/bipartite.png" width="1744" height="902" loading="lazy" alt="Project graph visualization with two pink patient nodes connected to yellow encoded marker-value nodes, including shared and patient-specific observations."></a><figcaption>From the report: pink nodes are patients; yellow nodes are encoded values such as <code>Smoking_no</code> or an age bin. Patients share a neighbor when their recorded values match. This bipartite view has no direct patient–patient or marker–marker links. Label nodes shown here belong to the exploratory graph; target edges are excluded from GNN inputs.</figcaption></figure>
 </section>
 
 <section aria-labelledby="representations">
-<p class="eyebrow">02 / Learn representations</p>
-<h2 id="representations">From relationships to vectors</h2>
+<p class="eyebrow">02 / Relations → representations</p>
+<h2 id="representations">Learn vectors from the graph</h2>
+<p>Using PyKEEN, we trained models including TransE and DistMult to score observed triples above corrupted alternatives. Each patient, marker value, and relation receives a learned vector: a compact representation of its role in the graph.</p>
 <ol class="model-flow">
-<li><strong>Clinical triples</strong><span>Patient → has_marker → encoded value</span></li>
-<li><strong>KG embeddings</strong><span>TransE, DistMult, and other PyKEEN models learn entity and relation vectors.</span></li>
-<li><strong>Patient representations</strong><span>Inspect the vectors and pass them to a graph neural network.</span></li>
+<li><strong>Encode</strong><span>Clinical records become typed relationships between entities.</span></li>
+<li><strong>Embed</strong><span>KG models learn entity and relation vectors from those triples.</span></li>
+<li><strong>Inspect &amp; predict</strong><span>Explore patient embeddings, then use the vectors as GNN features.</span></li>
 </ol>
-<figure><a href="/assets/images/projects/medgraph/transe-projections.png"><img src="/assets/images/projects/medgraph/transe-projections.png" width="1590" height="790" loading="lazy" alt="Saved TransE patient embeddings projected with PCA and UMAP, colored by Perugini grade. Grades overlap in both views."></a><figcaption>From the project report: PCA and UMAP views of TransE patient embeddings. The grades overlap; these projections alone do not establish predictive performance. Open the image for a closer look.</figcaption></figure>
+<p>The opening figure shows DistMult’s patient vectors. We used these projections to inspect representation structure, alongside link prediction to assess how well models recover held-out outcome links.</p>
 </section>
 
 <section aria-labelledby="prediction">
-<p class="eyebrow">03 / Assess disease prediction</p>
-<h2 id="prediction">Let the neighborhood inform the prediction</h2>
-<p>We used KG vectors as features in a heterogeneous graph and tested GNNs, including GraphSAGE, to combine information from connected clinical markers. The binary target was scintigraphy Perugini grade ≥ 2 versus grades 0–1.</p>
-<div class="callout"><p><strong>The trade-off:</strong> the report’s cohort-based GraphSAGE experiment favored recall, catching more positive cases at the cost of many false positives.</p></div>
-<p class="small">Earlier screening was the motivation. This retrospective course project does not establish prediction of future disease or clinical readiness. Bin choices, information leakage across embedding and GNN stages, and comparison with well-tuned tabular baselines still need validation.</p>
+<p class="eyebrow">03 / Representations → prediction</p>
+<h2 id="prediction">Combine clinical evidence through message passing</h2>
+<p>We used KG vectors as node and edge features in a heterogeneous graph, with clinical categories and marker-specific relations. GNNs, including GraphSAGE, aggregate information from connected nodes to learn representations tailored to a binary target: scintigraphy Perugini grade ≥ 2 versus grades 0–1.</p>
+<div class="callout"><p><strong>The screening trade-off:</strong> the report evaluated GraphSAGE across earlier and later patient cohorts. Favoring recall reduced missed positive cases, but produced many false positives.</p></div>
+<p class="small">Earlier screening motivated the project. The retrospective experiments do not establish prediction of future disease or clinical readiness. Further work includes validating bin choices, checking information leakage across training stages, and comparing against strong tabular baselines.</p>
 </section>
 </main>
 		<footer class="site-footer reveal">

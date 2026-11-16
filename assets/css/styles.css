@@ -536,6 +536,11 @@ p { margin-bottom: 1.2rem; }
   filter: grayscale(0%); 
   transform: scale(1.02);
 }
+.card img[src="/assets/images/projects/medgraph/distmult.png"] {
+  object-fit: contain;
+  filter: none;
+  background: white;
+}
 .card h3 { margin: 12px 0 8px 0; font-size: 18px; }
 .card p { margin: 0 0 8px 0; color: var(--muted); line-height: 1.5; }
 .card .meta { margin-top: 12px; font-size: 12px; color: #777; font-weight: 600; }
