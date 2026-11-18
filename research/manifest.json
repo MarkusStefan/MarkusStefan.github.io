@@ -2,7 +2,29 @@
   {
     "title": "Discovering Globally Aligned Representations through Causal Curiosity-Guided Exploration",
     "date": "2026-10-13",
-    "thumbnail": "/assets/images/research/causal-representations/overview.svg",
+    "thumbnail": "/assets/images/research/causal-representations/heavy-ant.gif",
+    "thumbnails": [
+      {
+        "src": "/assets/images/research/causal-representations/heavy-ant.gif",
+        "poster": "/assets/images/research/causal-representations/heavy-ant-poster.webp",
+        "alt": "Heavy Ant"
+      },
+      {
+        "src": "/assets/images/research/causal-representations/light-ant.gif",
+        "poster": "/assets/images/research/causal-representations/light-ant-poster.webp",
+        "alt": "Light Ant"
+      },
+      {
+        "src": "/assets/images/research/causal-representations/heavy-hopper.gif",
+        "poster": "/assets/images/research/causal-representations/heavy-hopper-poster.webp",
+        "alt": "Heavy Hopper"
+      },
+      {
+        "src": "/assets/images/research/causal-representations/light-hopper.gif",
+        "poster": "/assets/images/research/causal-representations/light-hopper-poster.webp",
+        "alt": "Light Hopper"
+      }
+    ],
     "description": "Learning globally consistent factor-sharing maps for compositional generalization. Research report with controlled MuJoCo results; nearing completion for planned top-tier ML submissions in 2027.",
     "link": "/research/aligned-causal-representations/"
   },

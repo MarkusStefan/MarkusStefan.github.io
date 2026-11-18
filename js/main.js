@@ -362,6 +362,66 @@
       return `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${x1.toFixed(1)} ${(y1 + dy).toFixed(1)}, ${x2.toFixed(1)} ${(y2 - dy).toFixed(1)}, ${x2.toFixed(1)} ${y2.toFixed(1)}`;
     }
 
+    function pixelBranchPath(x1, y1, x2, y2, grid) {
+      const snap = (v) => Math.round(v / grid) * grid;
+      const sx1 = snap(x1);
+      const sy1 = snap(y1);
+      const sx2 = snap(x2);
+      const sy2 = snap(y2);
+      const dx = sx2 - sx1;
+      const dy = sy2 - sy1;
+      if (dx === 0 || dy === 0) {
+        return `M ${sx1} ${sy1} L ${sx2} ${sy2}`;
+      }
+      const dirX = Math.sign(dx);
+      const dirY = Math.sign(dy);
+      const stepsX = Math.round(Math.abs(dx) / grid);
+      const stepsY = Math.round(Math.abs(dy) / grid);
+      let cx = sx1;
+      let cy = sy1;
+      const cmds = [`M ${cx} ${cy}`];
+
+      if (stepsY >= stepsX) {
+        const preY = Math.floor((stepsY - stepsX) / 2);
+        const postY = stepsY - stepsX - preY;
+        if (preY > 0) {
+          cy += dirY * preY * grid;
+          cmds.push(`L ${cx} ${cy}`);
+        }
+        for (let i = 0; i < stepsX; i++) {
+          cy += dirY * grid;
+          cmds.push(`L ${cx} ${cy}`);
+          cx += dirX * grid;
+          cmds.push(`L ${cx} ${cy}`);
+        }
+        if (postY > 0) {
+          cy += dirY * postY * grid;
+          cmds.push(`L ${cx} ${cy}`);
+        }
+      } else {
+        const c1 = Math.floor(stepsY / 2);
+        const c2 = stepsY - c1;
+        const midX = stepsX - stepsY;
+        for (let i = 0; i < c1; i++) {
+          cy += dirY * grid;
+          cmds.push(`L ${cx} ${cy}`);
+          cx += dirX * grid;
+          cmds.push(`L ${cx} ${cy}`);
+        }
+        if (midX > 0) {
+          cx += dirX * midX * grid;
+          cmds.push(`L ${cx} ${cy}`);
+        }
+        for (let i = 0; i < c2; i++) {
+          cx += dirX * grid;
+          cmds.push(`L ${cx} ${cy}`);
+          cy += dirY * grid;
+          cmds.push(`L ${cx} ${cy}`);
+        }
+      }
+      return cmds.join(' ');
+    }
+
     function laneClass(lane) {
       return ['edu', 'work', 'branch', 'quest', 'quest'][lane] || 'edu';
     }
@@ -390,15 +450,81 @@
       const height = stage.offsetHeight || svgRect.height || 900;
       if (!width || !height) return;
 
+      const isRetro = document.documentElement.classList.contains('theme-retro');
+      const isAlt = document.documentElement.classList.contains('theme-alt');
+      const compact = width < 130;
+      const G = compact ? 3 : 4;
+      const snap = (v) => (isRetro ? Math.round(v / G) * G : v);
+
+      const cs = getComputedStyle(document.documentElement);
+      const cssVar = (name, fallback) => cs.getPropertyValue(name).trim() || fallback;
+      const palette = {
+        edu: {
+          base: cssVar('--git-edu', '#16a34a'),
+          light: cssVar('--git-edu-light', '#86efac'),
+          dark: cssVar('--git-edu-dark', '#14532d')
+        },
+        work: {
+          base: cssVar('--git-work', '#2563eb'),
+          light: cssVar('--git-work-light', '#93c5fd'),
+          dark: cssVar('--git-work-dark', '#1e3a8a')
+        },
+        branch: {
+          base: cssVar('--git-branch', '#eab308'),
+          light: cssVar('--git-branch-light', '#fef08a'),
+          dark: cssVar('--git-branch-dark', '#854d0e')
+        },
+        quest: {
+          base: cssVar('--git-quest', '#9333ea'),
+          light: cssVar('--git-quest-light', '#d8b4fe'),
+          dark: cssVar('--git-quest-dark', '#4c1d95')
+        }
+      };
+      const retroOutline = cssVar('--retro-outline', '#000000');
+      const retroShadow = cssVar('--git-pixel-shadow', 'rgba(0,0,0,0.42)');
+      const retroHoverFg = cssVar('--retro-hover-fg', '#ff0000');
+      const ringColor = cssVar('--git-dot-border', isAlt ? '#0a0a0c' : '#ffffff');
+
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      if (isRetro) {
+        svg.setAttribute('shape-rendering', 'crispEdges');
+      } else {
+        svg.removeAttribute('shape-rendering');
+      }
       svg.innerHTML = '';
 
+      if (!isRetro) {
+        const defs = svgEl('defs', {}, svg);
+        const blurFilter = svgEl('filter', {
+          id: 'git3dBlur',
+          x: '-60%',
+          y: '-60%',
+          width: '220%',
+          height: '220%'
+        }, defs);
+        svgEl('feGaussianBlur', { stdDeviation: '2.4' }, blurFilter);
+
+        Object.entries(palette).forEach(([key, p]) => {
+          const grad = svgEl('radialGradient', {
+            id: `git3dSphere-${key}`,
+            cx: '50%',
+            cy: '50%',
+            r: '54%',
+            fx: '32%',
+            fy: '28%'
+          }, defs);
+          svgEl('stop', { offset: '0%', 'stop-color': p.light }, grad);
+          svgEl('stop', { offset: '44%', 'stop-color': p.base }, grad);
+          svgEl('stop', { offset: '100%', 'stop-color': p.dark }, grad);
+        });
+      }
+
       const laneX = [
-        width * 0.13,
-        width * 0.31,
-        width * 0.49,
-        width * 0.68,
-        width * 0.86
+        snap(width * 0.12),
+        snap(width * 0.29),
+        snap(width * 0.46),
+        snap(width * 0.64),
+        snap(width * 0.81)
       ];
 
       const nodes = {};
@@ -406,7 +532,7 @@
         const id = card.dataset.nodeId;
         const lane = Number(card.dataset.lane || 0);
         const r = card.getBoundingClientRect();
-        const anchorY = (r.top - svgRect.top) + Math.min(24, r.height * 0.36);
+        const anchorY = snap((r.top - svgRect.top) + Math.min(24, r.height * 0.36));
         nodes[id] = {
           id,
           el: card,
@@ -425,157 +551,385 @@
       const pathsLayer = svgEl('g', { class: 'git-paths-layer' }, svg);
       const dotsLayer = svgEl('g', { class: 'git-dots-layer' }, svg);
 
-      function drawMergeDot(x, y, laneCls, group) {
-        svgEl('circle', {
-          cx: x.toFixed(1),
-          cy: y.toFixed(1),
-          r: 3.5,
-          class: `git-merge-dot git-fill-${laneCls}`,
-          'data-group': group
-        }, dotsLayer);
+      function routeBranch(x1, y1, x2, y2) {
+        return isRetro ? pixelBranchPath(x1, y1, x2, y2, G) : bezierY(x1, y1, x2, y2);
       }
 
-      // 0. Background vertical dotted rail guides (Gitflow style)
+      function stripMove(d) {
+        return d.replace(/^M [^ ]+ [^ ]+ /, '');
+      }
+
+      function drawRail(d, laneCls, group) {
+        const p = palette[laneCls] || palette.edu;
+        const g = svgEl('g', { class: 'git-rail-group', 'data-group': group }, pathsLayer);
+        if (isRetro) {
+          svgEl('path', {
+            d,
+            fill: 'none',
+            stroke: retroShadow,
+            'stroke-width': G,
+            'stroke-linecap': 'square',
+            'stroke-linejoin': 'miter',
+            transform: 'translate(2, 2)'
+          }, g);
+          svgEl('path', {
+            d,
+            fill: 'none',
+            stroke: retroOutline,
+            'stroke-width': G + 2,
+            'stroke-linecap': 'square',
+            'stroke-linejoin': 'miter'
+          }, g);
+          svgEl('path', {
+            d,
+            fill: 'none',
+            stroke: p.base,
+            'stroke-width': G,
+            'stroke-linecap': 'square',
+            'stroke-linejoin': 'miter'
+          }, g);
+        } else {
+          svgEl('path', {
+            d,
+            class: 'git-rail',
+            stroke: isAlt ? 'rgba(0, 0, 0, 0.6)' : 'rgba(15, 23, 42, 0.11)',
+            'stroke-width': compact ? 2.6 : 3.1,
+            transform: 'translate(0, 4.5)',
+            filter: 'url(#git3dBlur)'
+          }, g);
+          svgEl('path', {
+            d,
+            class: 'git-rail',
+            stroke: p.base,
+            'stroke-width': compact ? 2.1 : 2.5
+          }, g);
+          svgEl('path', {
+            d,
+            class: 'git-rail',
+            stroke: '#ffffff',
+            opacity: isAlt ? '0.28' : '0.38',
+            'stroke-width': '0.65',
+            transform: 'translate(-0.35, -0.4)'
+          }, g);
+        }
+      }
+
+      function drawArrow(x, tipY, laneCls, group) {
+        const p = palette[laneCls] || palette.edu;
+        const g = svgEl('g', { class: 'git-rail-group', 'data-group': group }, pathsLayer);
+        if (isRetro) {
+          const sx = Math.round(x);
+          const sy = Math.round(tipY);
+          const rows = [
+            { dy: -6, w: 2 },
+            { dy: -4, w: 6 },
+            { dy: -2, w: 10 },
+            { dy: 0, w: 14 }
+          ];
+          // Shadow
+          rows.forEach(row => {
+            svgEl('rect', {
+              x: sx - row.w / 2 + 2,
+              y: sy + row.dy + 2,
+              width: row.w,
+              height: 2,
+              fill: retroShadow
+            }, g);
+          });
+          // Black pixel outline
+          svgEl('rect', { x: sx - 2, y: sy - 8, width: 4, height: 2, fill: retroOutline }, g);
+          rows.forEach(row => {
+            svgEl('rect', {
+              x: sx - row.w / 2 - 2,
+              y: sy + row.dy,
+              width: row.w + 4,
+              height: 2,
+              fill: retroOutline
+            }, g);
+          });
+          svgEl('rect', { x: sx - 8, y: sy + 2, width: 16, height: 2, fill: retroOutline }, g);
+          // Colored pixel fill + left highlight pixel
+          rows.forEach(row => {
+            svgEl('rect', {
+              x: sx - row.w / 2,
+              y: sy + row.dy,
+              width: row.w,
+              height: 2,
+              fill: p.base
+            }, g);
+            if (row.w >= 6) {
+              svgEl('rect', {
+                x: sx - row.w / 2,
+                y: sy + row.dy,
+                width: 2,
+                height: 2,
+                fill: p.light
+              }, g);
+            }
+          });
+        } else {
+          const hw = compact ? 3.8 : 4.4;
+          const top = tipY - 5.2;
+          const bot = tipY + 1.8;
+          const chev = `M ${(x - hw).toFixed(1)} ${bot.toFixed(1)} L ${x.toFixed(1)} ${top.toFixed(1)} L ${(x + hw).toFixed(1)} ${bot.toFixed(1)}`;
+          svgEl('path', {
+            d: chev,
+            class: 'git-rail',
+            stroke: isAlt ? 'rgba(0, 0, 0, 0.6)' : 'rgba(15, 23, 42, 0.14)',
+            'stroke-width': compact ? 2.4 : 2.8,
+            transform: 'translate(0, 4.4)',
+            filter: 'url(#git3dBlur)'
+          }, g);
+          svgEl('path', {
+            d: chev,
+            class: 'git-rail',
+            stroke: p.base,
+            'stroke-width': compact ? 2.0 : 2.35
+          }, g);
+        }
+      }
+
+      function drawMergeDot(x, y, laneCls, group) {
+        const p = palette[laneCls] || palette.edu;
+        const g = svgEl('g', { 'data-group': group }, dotsLayer);
+        if (isRetro) {
+          const sx = Math.round(x);
+          const sy = Math.round(y);
+          svgEl('rect', { x: sx - 2, y: sy - 2, width: 8, height: 8, fill: retroShadow }, g);
+          svgEl('rect', { x: sx - 4, y: sy - 4, width: 8, height: 8, fill: retroOutline }, g);
+          svgEl('rect', { x: sx - 2, y: sy - 2, width: 4, height: 4, fill: p.base }, g);
+          svgEl('rect', { x: sx - 2, y: sy - 2, width: 2, height: 2, fill: p.light }, g);
+        } else {
+          const r = compact ? 2.7 : 3.2;
+          svgEl('ellipse', {
+            cx: x.toFixed(1),
+            cy: (y + 3.2).toFixed(1),
+            rx: (r + 0.4).toFixed(1),
+            ry: (r * 0.56).toFixed(1),
+            fill: isAlt ? 'rgba(0, 0, 0, 0.58)' : 'rgba(15, 23, 42, 0.13)',
+            filter: 'url(#git3dBlur)'
+          }, g);
+          svgEl('circle', {
+            cx: x.toFixed(1),
+            cy: y.toFixed(1),
+            r: (r + 1.5).toFixed(1),
+            fill: ringColor
+          }, g);
+          svgEl('circle', {
+            cx: x.toFixed(1),
+            cy: y.toFixed(1),
+            r: r.toFixed(1),
+            fill: `url(#git3dSphere-${laneCls})`,
+            class: 'git-merge-dot'
+          }, g);
+        }
+      }
+
+      function drawCommitNode(node) {
+        const laneCls = laneClass(node.lane);
+        const p = palette[laneCls] || palette.edu;
+        const g = svgEl('g', {
+          class: 'git-node-group',
+          'data-node-id': node.id,
+          'data-group': node.group
+        }, dotsLayer);
+
+        if (isRetro) {
+          const sx = Math.round(node.x);
+          const sy = Math.round(node.y);
+          const half = compact ? 6 : 7;
+          const inner = compact ? 4 : 5;
+          const core = compact ? 2 : 3;
+
+          // Hover targeting frame (hidden unless hovered)
+          svgEl('rect', {
+            x: sx - half - 3,
+            y: sy - half - 3,
+            width: (half + 3) * 2,
+            height: (half + 3) * 2,
+            fill: 'none',
+            stroke: retroHoverFg,
+            'stroke-width': 2,
+            class: 'git-pixel-hover-box'
+          }, g);
+          // Hard pixel drop shadow
+          svgEl('rect', { x: sx - inner + 2, y: sy - half + 2, width: inner * 2, height: half * 2, fill: retroShadow }, g);
+          svgEl('rect', { x: sx - half + 2, y: sy - inner + 2, width: half * 2, height: inner * 2, fill: retroShadow }, g);
+          // Stepped 8-bit pixel octagon black border
+          svgEl('rect', { x: sx - inner, y: sy - half, width: inner * 2, height: half * 2, fill: retroOutline }, g);
+          svgEl('rect', { x: sx - half, y: sy - inner, width: half * 2, height: inner * 2, fill: retroOutline }, g);
+          // Colored inner pixel octagon
+          svgEl('rect', { x: sx - inner, y: sy - core, width: inner * 2, height: core * 2, fill: p.base }, g);
+          svgEl('rect', { x: sx - core, y: sy - inner, width: core * 2, height: inner * 2, fill: p.base }, g);
+          // Bottom-right pixel shading
+          svgEl('rect', { x: sx + core - 2, y: sy + inner - 2, width: 2, height: 2, fill: p.dark }, g);
+          svgEl('rect', { x: sx + inner - 2, y: sy + core - 2, width: 2, height: 2, fill: p.dark }, g);
+          svgEl('rect', { x: sx + core - 2, y: sy + core - 2, width: 2, height: 2, fill: p.dark }, g);
+          // Top-left 16-bit specular pixel highlights
+          svgEl('rect', { x: sx - core, y: sy - core, width: 2, height: 2, fill: '#ffffff' }, g);
+          svgEl('rect', { x: sx - core + 2, y: sy - inner, width: 2, height: 2, fill: p.light }, g);
+          svgEl('rect', { x: sx - inner, y: sy - core + 2, width: 2, height: 2, fill: p.light }, g);
+        } else {
+          const r = compact ? 4.8 : 5.7;
+          // Soft diffused floating shadow (stays grounded while orb lifts)
+          svgEl('ellipse', {
+            cx: node.x.toFixed(1),
+            cy: (node.y + 4.8).toFixed(1),
+            rx: (r + 0.5).toFixed(1),
+            ry: (r * 0.52).toFixed(1),
+            fill: isAlt ? 'rgba(0, 0, 0, 0.65)' : 'rgba(15, 23, 42, 0.15)',
+            filter: 'url(#git3dBlur)',
+            class: 'git-node-shadow'
+          }, g);
+          // Concentric spatial hover halo
+          svgEl('circle', {
+            cx: node.x.toFixed(1),
+            cy: node.y.toFixed(1),
+            r: (r + 4.8).toFixed(1),
+            stroke: p.base,
+            class: 'git-node-halo'
+          }, g);
+          const body = svgEl('g', { class: 'git-node-body' }, g);
+          // Crisp negative-space separation ring
+          svgEl('circle', {
+            cx: node.x.toFixed(1),
+            cy: node.y.toFixed(1),
+            r: (r + 2.2).toFixed(1),
+            fill: ringColor
+          }, body);
+          // Precision satin 3D orb
+          svgEl('circle', {
+            cx: node.x.toFixed(1),
+            cy: node.y.toFixed(1),
+            r: r.toFixed(1),
+            fill: `url(#git3dSphere-${laneCls})`,
+            class: 'git-node-dot'
+          }, body);
+          // Subtle top-left specular gleam
+          svgEl('circle', {
+            cx: (node.x - r * 0.28).toFixed(1),
+            cy: (node.y - r * 0.28).toFixed(1),
+            r: (r * 0.2).toFixed(1),
+            fill: 'rgba(255, 255, 255, 0.5)'
+          }, body);
+        }
+      }
+
+      // 0. Background vertical dotted rail guides
       laneX.forEach((x) => {
-        svgEl('line', {
-          x1: x.toFixed(1),
-          y1: '4',
-          x2: x.toFixed(1),
-          y2: (height - 4).toFixed(1),
-          class: 'git-lane-guide'
-        }, guidesLayer);
+        if (isRetro) {
+          svgEl('line', {
+            x1: Math.round(x),
+            y1: 4,
+            x2: Math.round(x),
+            y2: Math.round(height - 4),
+            class: 'git-lane-guide',
+            'stroke-width': '2',
+            'stroke-dasharray': '2 6'
+          }, guidesLayer);
+        } else {
+          svgEl('line', {
+            x1: x.toFixed(1),
+            y1: '4',
+            x2: x.toFixed(1),
+            y2: (height - 4).toFixed(1),
+            class: 'git-lane-guide'
+          }, guidesLayer);
+        }
       });
 
-      // 1. Subtle horizontal connector lines to cards on the right
+      // 1. Horizontal connector bridges to cards on the right
       Object.values(n).forEach(node => {
-        svgEl('line', {
-          x1: node.x.toFixed(1),
-          y1: node.y.toFixed(1),
-          x2: width.toFixed(1),
-          y2: node.y.toFixed(1),
-          class: `git-connector git-stroke-${laneClass(node.lane)}`,
+        const laneCls = laneClass(node.lane);
+        const p = palette[laneCls] || palette.edu;
+        const cg = svgEl('g', {
+          class: 'git-connector-group',
           'data-node-id': node.id,
           'data-group': node.group
         }, connectorsLayer);
+
+        if (isRetro) {
+          const sx = Math.round(node.x);
+          const sy = Math.round(node.y);
+          const endX = Math.round(width);
+          svgEl('line', {
+            x1: sx,
+            y1: sy,
+            x2: endX,
+            y2: sy,
+            class: `git-connector git-stroke-${laneCls}`,
+            'stroke-width': '2',
+            'stroke-dasharray': '4 4'
+          }, cg);
+          // Crisp pixel plug at card edge
+          svgEl('rect', {
+            x: endX - 4,
+            y: sy - 2,
+            width: 4,
+            height: 4,
+            fill: p.base,
+            stroke: retroOutline,
+            'stroke-width': 1
+          }, cg);
+        } else {
+          svgEl('line', {
+            x1: node.x.toFixed(1),
+            y1: node.y.toFixed(1),
+            x2: width.toFixed(1),
+            y2: node.y.toFixed(1),
+            class: `git-connector git-stroke-${laneCls}`
+          }, cg);
+        }
       });
 
       // 2. Lane 0: education (Green, leftmost) bottom -> top: n14 -> n13 -> n9 -> n7 -> n1
-      const eduTopY = Math.max(16, n.n1.y - 20);
-      svgEl('path', {
-        d: `M ${n.n14.x.toFixed(1)} ${n.n14.y.toFixed(1)} L ${n.n1.x.toFixed(1)} ${eduTopY.toFixed(1)}`,
-        class: 'git-rail git-stroke-edu',
-        'data-group': 'education'
-      }, pathsLayer);
-      svgEl('polygon', {
-        points: `${n.n1.x.toFixed(1)},${(eduTopY - 6).toFixed(1)} ${(n.n1.x - 4.5).toFixed(1)},${(eduTopY + 3).toFixed(1)} ${(n.n1.x + 4.5).toFixed(1)},${(eduTopY + 3).toFixed(1)}`,
-        class: 'git-fill-edu',
-        'data-group': 'education'
-      }, pathsLayer);
+      const eduTopY = snap(Math.max(16, n.n1.y - 20));
+      drawRail(`M ${n.n14.x.toFixed(1)} ${n.n14.y.toFixed(1)} L ${n.n1.x.toFixed(1)} ${eduTopY.toFixed(1)}`, 'edu', 'education');
+      drawArrow(n.n1.x, eduTopY, 'edu', 'education');
 
       // 3. Military Service (Amber, Rail 2): forks right from n13 -> n12 -> merges left into edu above n12
-      const yMilMerge = n.n12.y - Math.min(28, Math.max(14, (n.n12.y - n.n11.y) * 0.48));
-      svgEl('path', {
-        d: bezierY(n.n13.x, n.n13.y, n.n12.x, n.n12.y),
-        class: 'git-rail git-stroke-branch',
-        'data-group': 'branch'
-      }, pathsLayer);
-      svgEl('path', {
-        d: bezierY(n.n12.x, n.n12.y, laneX[0], yMilMerge),
-        class: 'git-rail git-stroke-branch',
-        'data-group': 'branch'
-      }, pathsLayer);
+      const yMilMerge = snap(n.n12.y - Math.min(28, Math.max(14, (n.n12.y - n.n11.y) * 0.48)));
+      drawRail(routeBranch(n.n13.x, n.n13.y, n.n12.x, n.n12.y), 'branch', 'branch');
+      drawRail(routeBranch(n.n12.x, n.n12.y, laneX[0], yMilMerge), 'branch', 'branch');
       drawMergeDot(laneX[0], yMilMerge, 'branch', 'branch');
 
       // 4. UIUC Exchange Semester (Amber, Rail 2): forks right from edu -> n11 -> merges left into edu before Tutor & B.Sc.
-      const yUiucStart = n.n11.y + Math.min(26, Math.max(12, (n.n12.y - n.n11.y) * 0.36));
-      const yUiucMerge = n.n11.y - Math.min(26, Math.max(14, (n.n11.y - n.n10.y) * 0.58));
-      svgEl('path', {
-        d: bezierY(laneX[0], yUiucStart, n.n11.x, n.n11.y),
-        class: 'git-rail git-stroke-branch',
-        'data-group': 'branch'
-      }, pathsLayer);
-      svgEl('path', {
-        d: bezierY(n.n11.x, n.n11.y, laneX[0], yUiucMerge),
-        class: 'git-rail git-stroke-branch',
-        'data-group': 'branch'
-      }, pathsLayer);
+      const yUiucStart = snap(n.n11.y + Math.min(26, Math.max(12, (n.n12.y - n.n11.y) * 0.36)));
+      const yUiucMerge = snap(n.n11.y - Math.min(26, Math.max(14, (n.n11.y - n.n10.y) * 0.58)));
+      drawRail(routeBranch(laneX[0], yUiucStart, n.n11.x, n.n11.y), 'branch', 'branch');
+      drawRail(routeBranch(n.n11.x, n.n11.y, laneX[0], yUiucMerge), 'branch', 'branch');
       drawMergeDot(laneX[0], yUiucMerge, 'branch', 'branch');
 
       // 5a. AAU Tutor in Econometrics (Blue, Rail 1): forks right from edu -> n10 -> merges left into edu before B.Sc. completion (n9)
-      const yTutorStart = n.n10.y + Math.min(18, Math.max(10, (n.n11.y - n.n10.y) * 0.32));
-      const yTutorMerge = n.n10.y - Math.min(26, Math.max(14, (n.n10.y - n.n9.y) * 0.52));
-      svgEl('path', {
-        d: bezierY(laneX[0], yTutorStart, n.n10.x, n.n10.y),
-        class: 'git-rail git-stroke-work',
-        'data-group': 'work'
-      }, pathsLayer);
-      svgEl('path', {
-        d: bezierY(n.n10.x, n.n10.y, laneX[0], yTutorMerge),
-        class: 'git-rail git-stroke-work',
-        'data-group': 'work'
-      }, pathsLayer);
+      const yTutorStart = snap(n.n10.y + Math.min(18, Math.max(10, (n.n11.y - n.n10.y) * 0.32)));
+      const yTutorMerge = snap(n.n10.y - Math.min(26, Math.max(14, (n.n10.y - n.n9.y) * 0.52)));
+      drawRail(routeBranch(laneX[0], yTutorStart, n.n10.x, n.n10.y), 'work', 'work');
+      drawRail(routeBranch(n.n10.x, n.n10.y, laneX[0], yTutorMerge), 'work', 'work');
       drawMergeDot(laneX[0], yTutorMerge, 'work', 'work');
 
       // 5b. Continuous BAWAG work trunk (Blue, Rail 1): forks right from edu at n7 -> n6 -> n4 -> n3 -> n2
-      const workTopY = Math.max(16, n.n2.y - 20);
-      svgEl('path', {
-        d: bezierY(n.n7.x, n.n7.y, n.n6.x, n.n6.y),
-        class: 'git-rail git-stroke-work',
-        'data-group': 'work'
-      }, pathsLayer);
-      svgEl('path', {
-        d: `M ${n.n6.x.toFixed(1)} ${n.n6.y.toFixed(1)} L ${n.n2.x.toFixed(1)} ${workTopY.toFixed(1)}`,
-        class: 'git-rail git-stroke-work',
-        'data-group': 'work'
-      }, pathsLayer);
-      svgEl('polygon', {
-        points: `${n.n2.x.toFixed(1)},${(workTopY - 6).toFixed(1)} ${(n.n2.x - 4.5).toFixed(1)},${(workTopY + 3).toFixed(1)} ${(n.n2.x + 4.5).toFixed(1)},${(workTopY + 3).toFixed(1)}`,
-        class: 'git-fill-work',
-        'data-group': 'work'
-      }, pathsLayer);
+      const workTopY = snap(Math.max(16, n.n2.y - 20));
+      drawRail(routeBranch(n.n7.x, n.n7.y, n.n6.x, n.n6.y), 'work', 'work');
+      drawRail(`M ${n.n6.x.toFixed(1)} ${n.n6.y.toFixed(1)} L ${n.n2.x.toFixed(1)} ${workTopY.toFixed(1)}`, 'work', 'work');
+      drawArrow(n.n2.x, workTopY, 'work', 'work');
 
       // 6. Uniforce Consulting (Purple quest, Rail 3): forks right from edu at Aug 2023 (above n9) -> n8 -> straight up Rail 3 -> merges left into edu above n4 (Nov 2024)
-      const yUniStart = n.n8.y + Math.min(24, Math.max(12, (n.n9.y - n.n8.y) * 0.42));
-      const yUniMerge = n.n4.y - Math.min(24, Math.max(12, (n.n4.y - n.n5.y) * 0.46));
-      svgEl('path', {
-        d: bezierY(laneX[0], yUniStart, n.n8.x, n.n8.y),
-        class: 'git-rail git-stroke-quest',
-        'data-group': 'quest'
-      }, pathsLayer);
-      svgEl('path', {
-        d: `M ${n.n8.x.toFixed(1)} ${n.n8.y.toFixed(1)} L ${laneX[3].toFixed(1)} ${n.n4.y.toFixed(1)} ${bezierY(laneX[3], n.n4.y, laneX[0], yUniMerge).replace(/^M [^ ]+ [^ ]+ /, '')}`,
-        class: 'git-rail git-stroke-quest',
-        'data-group': 'quest'
-      }, pathsLayer);
+      const yUniStart = snap(n.n8.y + Math.min(24, Math.max(12, (n.n9.y - n.n8.y) * 0.42)));
+      const yUniMerge = snap(n.n4.y - Math.min(24, Math.max(12, (n.n4.y - n.n5.y) * 0.46)));
+      drawRail(routeBranch(laneX[0], yUniStart, n.n8.x, n.n8.y), 'quest', 'quest');
+      drawRail(`M ${n.n8.x.toFixed(1)} ${n.n8.y.toFixed(1)} L ${laneX[3].toFixed(1)} ${n.n4.y.toFixed(1)} ${stripMove(routeBranch(laneX[3], n.n4.y, laneX[0], yUniMerge))}`, 'quest', 'quest');
       drawMergeDot(laneX[0], yUniMerge, 'quest', 'quest');
 
       // 7. MedUni Vienna Research Internship (Purple quest, Rail 4): forks right from edu in Feb 2024 -> up Rail 4 through n5 -> merges left into edu above n3 (Dec 2025)
-      const yMedStart = n.n6.y - Math.min(20, Math.max(10, (n.n6.y - n.n4.y) * 0.25));
-      const yMedLand = n.n4.y + Math.min(18, Math.max(10, (n.n6.y - n.n4.y) * 0.22));
-      const yMedMerge = n.n3.y - Math.min(24, Math.max(12, (n.n3.y - n.n2.y) * 0.46));
-      svgEl('path', {
-        d: `${bezierY(laneX[0], yMedStart, laneX[4], yMedLand)} L ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)}`,
-        class: 'git-rail git-stroke-quest',
-        'data-group': 'quest'
-      }, pathsLayer);
-      svgEl('path', {
-        d: `M ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)} L ${laneX[4].toFixed(1)} ${n.n3.y.toFixed(1)} ${bezierY(laneX[4], n.n3.y, laneX[0], yMedMerge).replace(/^M [^ ]+ [^ ]+ /, '')}`,
-        class: 'git-rail git-stroke-quest',
-        'data-group': 'quest'
-      }, pathsLayer);
+      const yMedStart = snap(n.n6.y - Math.min(20, Math.max(10, (n.n6.y - n.n4.y) * 0.25)));
+      const yMedLand = snap(n.n4.y + Math.min(18, Math.max(10, (n.n6.y - n.n4.y) * 0.22)));
+      const yMedMerge = snap(n.n3.y - Math.min(24, Math.max(12, (n.n3.y - n.n2.y) * 0.46)));
+      drawRail(`${routeBranch(laneX[0], yMedStart, laneX[4], yMedLand)} L ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)}`, 'quest', 'quest');
+      drawRail(`M ${n.n5.x.toFixed(1)} ${n.n5.y.toFixed(1)} L ${laneX[4].toFixed(1)} ${n.n3.y.toFixed(1)} ${stripMove(routeBranch(laneX[4], n.n3.y, laneX[0], yMedMerge))}`, 'quest', 'quest');
       drawMergeDot(laneX[0], yMedMerge, 'quest', 'quest');
 
-      // 8. Bold dark-outlined commit circles (Gitflow style)
-      Object.values(n).forEach(node => {
-        svgEl('circle', {
-          cx: node.x.toFixed(1),
-          cy: node.y.toFixed(1),
-          r: 7,
-          class: `git-node-dot git-fill-${laneClass(node.lane)}`,
-          'data-node-id': node.id,
-          'data-group': node.group
-        }, dotsLayer);
-      });
+      // 8. Commit nodes (3D spheres in modern mode, 16-bit pixel gems in retro mode)
+      Object.values(n).forEach(drawCommitNode);
 
       const currentFilter = section.dataset.activeFilter || 'all';
       if (currentFilter !== 'all') setFilter(currentFilter);
@@ -594,13 +948,29 @@
       btn.addEventListener('click', () => setFilter(btn.dataset.branchFilter || 'all'));
     });
 
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     cards.forEach(card => {
       const id = card.dataset.nodeId;
       card.addEventListener('mouseenter', () => {
         svg.querySelectorAll(`[data-node-id="${id}"]`).forEach(el => el.classList.add('is-hovered'));
       });
+      card.addEventListener('pointermove', (e) => {
+        if (reducedMotion || document.documentElement.classList.contains('theme-retro')) return;
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const rx = ((0.5 - py) * 2.4).toFixed(2);
+        const ry = ((px - 0.5) * 2.6).toFixed(2);
+        card.style.setProperty('--rx', `${rx}deg`);
+        card.style.setProperty('--ry', `${ry}deg`);
+        card.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
+        card.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+      });
       card.addEventListener('mouseleave', () => {
         svg.querySelectorAll(`[data-node-id="${id}"]`).forEach(el => el.classList.remove('is-hovered'));
+        card.style.removeProperty('--rx');
+        card.style.removeProperty('--ry');
       });
     });
 
